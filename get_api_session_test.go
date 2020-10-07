@@ -1,4 +1,4 @@
-package sage_test
+package intacct_test
 
 import (
 	"encoding/json"
@@ -6,9 +6,8 @@ import (
 	"testing"
 )
 
-func TestGetChartOfAccounts(t *testing.T) {
-	req := client.NewGetChartOfAccountsRequest()
-	req.QueryParams().CompanyID = companyID
+func TestGetAPISession(t *testing.T) {
+	req := client.NewGetAPISessionRequest()
 	resp, err := req.Do()
 	if err != nil {
 		t.Error(err)

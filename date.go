@@ -1,4 +1,4 @@
-package sage
+package intacct
 
 import (
 	"encoding/json"

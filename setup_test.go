@@ -1,35 +1,28 @@
-package sage_test
+package intacct_test
 
 import (
 	"log"
 	"net/url"
 	"os"
-	"strconv"
 	"testing"
 
-	sage "github.com/omniboost/go-sageone-za"
+	intacct "github.com/omniboost/go-sage-intacct"
 )
 
 var (
-	client    *sage.Client
-	companyID int
+	client *intacct.Client
 )
 
 func TestMain(m *testing.M) {
-	var err error
-
 	baseURLString := os.Getenv("BASE_URL")
-	user := os.Getenv("USER")
-	password := os.Getenv("PASSWORD")
-	apiKey := os.Getenv("API_KEY")
+	senderID := os.Getenv("SENDER_ID")
+	senderPassword := os.Getenv("SENDER_PASSWORD")
+	userID := os.Getenv("USER_ID")
+	userPassword := os.Getenv("USER_PASSWORD")
+	companyID := os.Getenv("COMPANY_ID")
 	debug := os.Getenv("DEBUG")
-	id := os.Getenv("TEST_COMPANY_ID")
-	companyID, err = strconv.Atoi(id)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	client = sage.NewClient(nil, user, password, apiKey)
+	client = intacct.NewClient(nil, senderID, senderPassword, userID, userPassword, companyID)
 	if debug != "" {
 		client.SetDebug(true)
 	}
@@ -40,6 +33,5 @@ func TestMain(m *testing.M) {
 		}
 		client.SetBaseURL(*baseURL)
 	}
-	client.SetDisallowUnknownFields(true)
 	m.Run()
 }

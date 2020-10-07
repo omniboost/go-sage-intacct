@@ -1,9 +1,10 @@
-package sage
+package intacct
 
 import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"io"
@@ -17,26 +18,26 @@ import (
 	"text/template"
 
 	ntlmssp "github.com/Azure/go-ntlmssp"
-	"github.com/omniboost/go-sageone-za/utils"
+	"github.com/gofrs/uuid"
 )
 
 const (
 	libraryVersion = "0.0.1"
-	userAgent      = "go-sageone-za/" + libraryVersion
-	mediaType      = "application/json"
+	userAgent      = "go-sage-intacct/" + libraryVersion
+	mediaType      = "application/xml"
 	charset        = "utf-8"
 )
 
 var (
 	BaseURL = url.URL{
 		Scheme: "https",
-		Host:   "accounting.sageone.co.za",
-		Path:   "/api/2.0.0/",
+		Host:   "api.intacct.com",
+		Path:   "/ia/xml/xmlgw.phtml",
 	}
 )
 
 // NewClient returns a new Exact Globe Client client
-func NewClient(httpClient *http.Client, user, password, apiKey string) *Client {
+func NewClient(httpClient *http.Client, senderID, senderPassword, userID, userPassword, companyID string) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
@@ -44,9 +45,11 @@ func NewClient(httpClient *http.Client, user, password, apiKey string) *Client {
 	client := &Client{}
 
 	client.SetHTTPClient(httpClient)
-	client.SetUser(user)
-	client.SetPassword(password)
-	client.SetAPIKey(apiKey)
+	client.SetSenderID(senderID)
+	client.SetSenderPassword(senderPassword)
+	client.SetUserID(userID)
+	client.SetUserPassword(userPassword)
+	client.SetCompanyID(companyID)
 	client.SetBaseURL(BaseURL)
 	client.SetDebug(false)
 	client.SetUserAgent(userAgent)
@@ -65,16 +68,19 @@ type Client struct {
 	baseURL url.URL
 
 	// credentials
-	user     string
-	password string
-	apiKey   string
+	senderID       string
+	senderPassword string
+	userID         string
+	userPassword   string
+	companyID      string
+
+	sessionID string
 
 	// User agent for client
 	userAgent string
 
-	mediaType             string
-	charset               string
-	disallowUnknownFields bool
+	mediaType string
+	charset   string
 
 	// Optional function called after every successful request made to the DO Clients
 	onRequestCompleted RequestCompletionCallback
@@ -100,28 +106,44 @@ func (c *Client) SetDebug(debug bool) {
 	c.debug = debug
 }
 
-func (c Client) User() string {
-	return c.user
+func (c Client) SenderID() string {
+	return c.senderID
 }
 
-func (c *Client) SetUser(user string) {
-	c.user = user
+func (c *Client) SetSenderID(senderID string) {
+	c.senderID = senderID
 }
 
-func (c Client) Password() string {
-	return c.password
+func (c Client) SenderPassword() string {
+	return c.senderPassword
 }
 
-func (c *Client) SetPassword(password string) {
-	c.password = password
+func (c *Client) SetSenderPassword(senderPassword string) {
+	c.senderPassword = senderPassword
 }
 
-func (c Client) APIKey() string {
-	return c.apiKey
+func (c Client) UserID() string {
+	return c.userID
 }
 
-func (c *Client) SetAPIKey(apiKey string) {
-	c.apiKey = apiKey
+func (c *Client) SetUserID(userID string) {
+	c.userID = userID
+}
+
+func (c Client) UserPassword() string {
+	return c.userPassword
+}
+
+func (c *Client) SetUserPassword(userPassword string) {
+	c.userPassword = userPassword
+}
+
+func (c Client) CompanyID() string {
+	return c.companyID
+}
+
+func (c *Client) SetCompanyID(companyID string) {
+	c.companyID = companyID
 }
 
 func (c Client) BaseURL() url.URL {
@@ -156,10 +178,6 @@ func (c Client) UserAgent() string {
 	return userAgent
 }
 
-func (c *Client) SetDisallowUnknownFields(disallowUnknownFields bool) {
-	c.disallowUnknownFields = disallowUnknownFields
-}
-
 func (c *Client) GetEndpointURL(path string, pathParams PathParams) url.URL {
 	clientURL := c.BaseURL()
 	clientURL.Path = clientURL.Path + path
@@ -180,26 +198,20 @@ func (c *Client) GetEndpointURL(path string, pathParams PathParams) url.URL {
 	return clientURL
 }
 
-func (c *Client) NewRequest(ctx context.Context, method string, URL url.URL, body interface{}) (*http.Request, error) {
+func (c *Client) NewRequest(ctx context.Context, method string, URL url.URL, body Request) (*http.Request, error) {
+	body.Control.SenderID = c.SenderID()
+	body.Control.SenderPassword = c.SenderPassword()
+	body.Control.ControlID = c.GenerateControlID()
+
 	// convert body struct to json
 	buf := new(bytes.Buffer)
-	if body != nil {
-		err := json.NewEncoder(buf).Encode(body)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// create new http request
-	req, err := http.NewRequest(method, URL.String(), buf)
+	err := xml.NewEncoder(buf).Encode(body)
 	if err != nil {
 		return nil, err
 	}
 
-	values := url.Values{}
-	values.Add("ApiKey", c.APIKey())
-
-	err = utils.AddURLValuesToRequest(values, req, true)
+	// create new http request
+	req, err := http.NewRequest(method, URL.String(), buf)
 	if err != nil {
 		return nil, err
 	}
@@ -220,9 +232,7 @@ func (c *Client) NewRequest(ctx context.Context, method string, URL url.URL, bod
 // Do sends an Client request and returns the Client response. The Client response is json decoded and stored in the value
 // pointed to by v, or returned as an error if an Client error has occurred. If v implements the io.Writer interface,
 // the raw response will be written to v, without attempting to decode it.
-func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response, error) {
-	req.SetBasicAuth(c.user, c.password)
-
+func (c *Client) Do(req *http.Request, responseBody *Response) (*http.Response, error) {
 	if c.debug == true {
 		dump, _ := httputil.DumpRequestOut(req, true)
 		log.Println(string(dump))
@@ -260,20 +270,11 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 		return httpResp, nil
 	}
 
-	if responseBody == nil {
-		return httpResp, err
-	}
-
 	// interface implements io.Writer: write Body to it
 	// if w, ok := response.Envelope.(io.Writer); ok {
 	// 	_, err := io.Copy(w, httpResp.Body)
 	// 	return httpResp, err
 	// }
-
-	// try to decode body into interface parameter
-	if responseBody == nil {
-		return httpResp, nil
-	}
 
 	err = c.Unmarshal(httpResp.Body, &responseBody)
 	if err != nil {
@@ -302,11 +303,7 @@ func (c *Client) Unmarshal(r io.Reader, vv ...interface{}) error {
 		writers[i] = pw
 
 		go func(i int, v interface{}, pr *io.PipeReader, pw *io.PipeWriter) {
-			dec := json.NewDecoder(pr)
-			if c.disallowUnknownFields {
-				dec.DisallowUnknownFields()
-			}
-
+			dec := xml.NewDecoder(pr)
 			err := dec.Decode(v)
 			if err != nil {
 				errs = append(errs, err)
@@ -341,6 +338,10 @@ func (c *Client) Unmarshal(r io.Reader, vv ...interface{}) error {
 		return errors.New(strings.Join(msgs, ", "))
 	}
 	return nil
+}
+
+func (c *Client) GenerateControlID() string {
+	return uuid.Must(uuid.NewV4()).String()
 }
 
 // CheckResponse checks the Client response for errors, and returns them if
@@ -390,6 +391,29 @@ func CheckResponse(r *http.Response) error {
 	}
 
 	return errorResponse
+}
+
+func (c *Client) SessionID() (string, error) {
+	if c.sessionID == "" {
+		var err error
+		c.sessionID, err = c.NewSessionID()
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return c.sessionID, nil
+}
+
+func (c *Client) NewSessionID() (string, error) {
+	req := c.NewGetAPISessionRequest()
+	resp, err := req.Do()
+	if err != nil {
+		return "", err
+	}
+
+	return resp.Data().API.SessionID, nil
+
 }
 
 type ErrorResponse struct {
