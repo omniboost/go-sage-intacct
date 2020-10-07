@@ -4,8 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/omniboost/go-sageone-za/odata"
-	"github.com/omniboost/go-sageone-za/utils"
+	"github.com/omniboost/go-sage-intacct/utils"
 )
 
 func (c *Client) NewGetAPISessionRequest() GetAPISessionRequest {
@@ -31,15 +30,10 @@ type GetAPISessionRequest struct {
 }
 
 func (r GetAPISessionRequest) NewGetAPISessionQueryParams() *GetAPISessionQueryParams {
-	return &GetAPISessionQueryParams{
-		Pagination: odata.NewPagination(),
-	}
+	return &GetAPISessionQueryParams{}
 }
 
-type GetAPISessionQueryParams struct {
-	odata.Pagination
-	CompanyID int `schema:"CompanyId"`
-}
+type GetAPISessionQueryParams struct{}
 
 func (p GetAPISessionQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()

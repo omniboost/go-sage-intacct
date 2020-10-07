@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -11,7 +10,6 @@ import (
 	null "gopkg.in/guregu/null.v3"
 
 	"github.com/gorilla/schema"
-	"github.com/omniboost/go-sageone-za/odata"
 )
 
 type SchemaMarshaler interface {
@@ -70,26 +68,26 @@ func NewSchemaEncoder() *schema.Encoder {
 	encoder := schema.NewEncoder()
 
 	// // register custom encoders
-	encodeSchemaMarshaler := func(v reflect.Value) string {
-		marshaler, ok := v.Interface().(SchemaMarshaler)
-		if ok == true {
-			return marshaler.MarshalSchema()
-		}
+	// encodeSchemaMarshaler := func(v reflect.Value) string {
+	// 	marshaler, ok := v.Interface().(SchemaMarshaler)
+	// 	if ok == true {
+	// 		return marshaler.MarshalSchema()
+	// 	}
 
-		stringer, ok := v.Interface().(fmt.Stringer)
-		if ok == true {
-			return stringer.String()
-		}
+	// 	stringer, ok := v.Interface().(fmt.Stringer)
+	// 	if ok == true {
+	// 		return stringer.String()
+	// 	}
 
-		return ""
-	}
+	// 	return ""
+	// }
 
-	encoder.RegisterEncoder(&odata.Expand{}, encodeSchemaMarshaler)
-	encoder.RegisterEncoder(&odata.Filter{}, encodeSchemaMarshaler)
-	encoder.RegisterEncoder(&odata.Select{}, encodeSchemaMarshaler)
-	encoder.RegisterEncoder(&odata.Top{}, encodeSchemaMarshaler)
-	encoder.RegisterEncoder(&odata.OrderBy{}, encodeSchemaMarshaler)
-	encoder.RegisterEncoder(&odata.Skip{}, encodeSchemaMarshaler)
+	// encoder.RegisterEncoder(&odata.Expand{}, encodeSchemaMarshaler)
+	// encoder.RegisterEncoder(&odata.Filter{}, encodeSchemaMarshaler)
+	// encoder.RegisterEncoder(&odata.Select{}, encodeSchemaMarshaler)
+	// encoder.RegisterEncoder(&odata.Top{}, encodeSchemaMarshaler)
+	// encoder.RegisterEncoder(&odata.OrderBy{}, encodeSchemaMarshaler)
+	// encoder.RegisterEncoder(&odata.Skip{}, encodeSchemaMarshaler)
 
 	encodeNullFloat := func(v reflect.Value) string {
 		nullFloat, _ := v.Interface().(null.Float)

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/omniboost/go-sageone-za/utils"
+	"github.com/omniboost/go-sage-intacct/utils"
 )
 
 func (c *Client) NewGetCustomersRequest() GetCustomersRequest {
