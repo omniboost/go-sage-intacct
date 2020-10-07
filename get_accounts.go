@@ -14,8 +14,8 @@ func (c *Client) NewGetAccountsRequest() GetAccountsRequest {
 		headers: http.Header{},
 	}
 
-	r.queryParams = r.NewGetAccountsQueryParams()
-	r.pathParams = r.NewGetAccountsPathParams()
+	r.queryParams = r.NewQueryParams()
+	r.pathParams = r.NewPathParams()
 	r.requestBody = r.NewRequestBody()
 	return r
 }
@@ -29,12 +29,11 @@ type GetAccountsRequest struct {
 	requestBody GetAccountsRequestBody
 }
 
-func (r GetAccountsRequest) NewGetAccountsQueryParams() *GetAccountsQueryParams {
+func (r GetAccountsRequest) NewQueryParams() *GetAccountsQueryParams {
 	return &GetAccountsQueryParams{}
 }
 
-type GetAccountsQueryParams struct {
-}
+type GetAccountsQueryParams struct{}
 
 func (p GetAccountsQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
@@ -52,7 +51,7 @@ func (r *GetAccountsRequest) QueryParams() *GetAccountsQueryParams {
 	return r.queryParams
 }
 
-func (r GetAccountsRequest) NewGetAccountsPathParams() *GetAccountsPathParams {
+func (r GetAccountsRequest) NewPathParams() *GetAccountsPathParams {
 	return &GetAccountsPathParams{}
 }
 
@@ -75,9 +74,10 @@ func (r *GetAccountsRequest) Method() string {
 	return r.method
 }
 
-func (r GetAccountsRequest) NewGetAccountsRequestContent() GetAccountsRequestContent {
+func (r GetAccountsRequest) NewContent() GetAccountsRequestContent {
 	content := GetAccountsRequestContent{}
 	content.Function.ReadByQuery.Object = "GLACCOUNT"
+	content.Function.ReadByQuery.Query = NoQuery{}
 	return content
 }
 
@@ -104,7 +104,7 @@ func (r *GetAccountsRequest) NewRequestBody() GetAccountsRequestBody {
 	body := GetAccountsRequestBody{
 		Request: NewRequest(),
 	}
-	body.Operation.Content = r.NewGetAccountsRequestContent()
+	body.Operation.Content = r.NewContent()
 	return body
 }
 
@@ -155,25 +155,25 @@ type GetAccountsResponseData struct {
 		Status              string      `xml:"STATUS"`
 		RequireDept         bool        `xml:"REQUIREDEPT"`
 		RequireLoc          bool        `xml:"REQUIRELOC"`
-		Taxable             bool        `json:"TAXABLE"`
-		CategoryKey         string      `json:"CATEGORYKEY"`
-		Category            string      `json:"CATEGORY"`
-		TaxCode             string      `json:"TAXCODE"`
-		MRCCode             string      `json:"MRCCODE"`
-		CloseToAcctKey      string      `json:"CLOSETOACCTKEY"`
-		AlternativeAccount  string      `json:"ALTERNATIVEACCOUNT"`
-		WhenCreated         Date        `json:"WHENCREATED"`
-		WhenModified        Date        `json:"WHENMODIFIED"`
-		CreatedBy           int         `json:"CREATEDBY"`
-		ModifiedBy          int         `json:"MODIFIEDBY"`
-		SubledgerControlOn  bool        `json:"SUBLEDGERCONTROLON"`
-		MegaEntityKey       interface{} `json:"MEGAENTITYKEY"`
-		MegaEntityID        interface{} `json:"MEGAENTITYID"`
-		MegaEntityName      interface{} `json:"MEGAENTITYNAME"`
-		RequireProject      bool        `json:"REQUIREPROJECT"`
-		RequireCustomer     bool        `json:"REQUIRECUSTOMER"`
-		RequireVendor       bool        `json:"REQUIREVENDOR"`
-		RequireClass        bool        `json:"REQUIRECLASS"`
+		Taxable             bool        `xml:"TAXABLE"`
+		CategoryKey         string      `xml:"CATEGORYKEY"`
+		Category            string      `xml:"CATEGORY"`
+		TaxCode             string      `xml:"TAXCODE"`
+		MRCCode             string      `xml:"MRCCODE"`
+		CloseToAcctKey      string      `xml:"CLOSETOACCTKEY"`
+		AlternativeAccount  string      `xml:"ALTERNATIVEACCOUNT"`
+		WhenCreated         string      `xml:"WHENCREATED"`
+		WhenModified        string      `xml:"WHENMODIFIED"`
+		CreatedBy           int         `xml:"CREATEDBY"`
+		ModifiedBy          int         `xml:"MODIFIEDBY"`
+		SubledgerControlOn  bool        `xml:"SUBLEDGERCONTROLON"`
+		MegaEntityKey       interface{} `xml:"MEGAENTITYKEY"`
+		MegaEntityID        interface{} `xml:"MEGAENTITYID"`
+		MegaEntityName      interface{} `xml:"MEGAENTITYNAME"`
+		RequireProject      bool        `xml:"REQUIREPROJECT"`
+		RequireCustomer     bool        `xml:"REQUIRECUSTOMER"`
+		RequireVendor       bool        `xml:"REQUIREVENDOR"`
+		RequireClass        bool        `xml:"REQUIRECLASS"`
 	} `xml:"glaccount"`
 }
 
