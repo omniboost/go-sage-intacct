@@ -132,6 +132,7 @@ require (
 	github.com/mb0/glob v0.0.0-20160210091149-1eb79d2de6c4 // indirect
 	github.com/mdempsky/gocode v0.0.0-20200405233807-4acdcbdea79d // indirect
 	github.com/metaleap/go-xsd v0.0.0-20180330193350-61f7638f502f // indirect
+	github.com/metaleap/go-xsd-pkg v0.0.0-20170406225954-08667a7aef37 // indirect
 	github.com/mikkeloscar/sshconfig v0.0.0-20200912130257-f8464e2038cf // indirect
 	github.com/miku/zek v0.1.9 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
