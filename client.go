@@ -3,9 +3,7 @@ package intacct
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -18,12 +16,13 @@ import (
 	"text/template"
 
 	"github.com/gofrs/uuid"
+	"github.com/pkg/errors"
 )
 
 const (
 	libraryVersion = "0.0.1"
 	userAgent      = "go-sage-intacct/" + libraryVersion
-	mediaType      = "application/xml"
+	mediaType      = "text/xml"
 	charset        = "utf-8"
 )
 
@@ -275,10 +274,6 @@ func (c *Client) Do(req *http.Request, responseBody *Response) (*http.Response, 
 		return httpResp, err
 	}
 
-	// if len(errorResponse.Messages) > 0 {
-	// 	return httpResp, errorResponse
-	// }
-
 	return httpResp, nil
 }
 
@@ -365,26 +360,24 @@ func CheckResponse(r *http.Response) error {
 
 	err = checkContentType(r)
 	if err != nil {
-		if string(data) != "" {
-			errorResponse.Errors = append(errorResponse.Errors, errors.New(string(data)))
-		} else {
-			errorResponse.Errors = append(errorResponse.Errors, errors.New(r.Status))
-		}
-		return errorResponse
+		return err
 	}
 
 	if len(data) == 0 {
-		return errorResponse
+		return errors.New("No response data")
 	}
 
 	// convert json to struct
-	err = json.Unmarshal(data, errorResponse)
+	err = xml.Unmarshal(data, errorResponse)
 	if err != nil {
-		errorResponse.Errors = append(errorResponse.Errors, err)
+		return errors.WithStack(err)
+	}
+
+	if len(errorResponse.ErrorMessage.Errors) > 0 {
 		return errorResponse
 	}
 
-	return errorResponse
+	return nil
 }
 
 func (c *Client) SessionID() (string, error) {
@@ -414,40 +407,28 @@ type ErrorResponse struct {
 	// HTTP response that caused this error
 	Response *http.Response `json:"-"`
 
-	Errors []error
-}
-
-type Error struct {
-	Message       string `json:"message"`
-	MessageDetail string `json:"MessageDetail"`
-}
-
-func (e Error) Error() string {
-	return fmt.Sprintf("%s: %s", e.Message, e.MessageDetail)
-}
-
-func (r *ErrorResponse) UnmarshalJSON(data []byte) error {
-	e := Error{}
-	err := json.Unmarshal(data, &e)
-	if err != nil {
-		return err
-	}
-
-	r.Errors = append(r.Errors, e)
-
-	return nil
+	XMLName xml.Name `xml:"response"`
+	Control struct {
+		Status string `xml:"status"`
+	} `xml:"control"`
+	ErrorMessage struct {
+		Errors []struct {
+			ErrorNo     string `xml:"errorno"`
+			Description string `xml:"description"`
+		} `xml:"error"`
+	} `xml:"errormessage"`
 }
 
 func (r ErrorResponse) Error() string {
-	if len(r.Errors) > 0 {
+	if len(r.ErrorMessage.Errors) > 0 {
 		str := []string{}
-		for _, err := range r.Errors {
-			str = append(str, err.Error())
+		for _, err := range r.ErrorMessage.Errors {
+			str = append(str, err.Description)
 		}
 		return strings.Join(str, ", ")
 	}
 
-	return r.Errors[0].Error()
+	return ""
 }
 
 func checkContentType(response *http.Response) error {
