@@ -89,14 +89,14 @@ type CreateJournalEntryRequestContent struct {
 				ReverseDate string `xml:"REVERSEDATE,omitempty"`
 				BatchTitle  string `xml:"BATCH_TITLE"`
 				Entries     []struct {
-					AccountNo      string  `xml:"ACCOUNTNO"`
-					Department     string  `xml:"DEPARTMENT"`
-					Location       string  `xml:"LOCATION"`
-					Currency       string  `xml:"CURRENCY"`
-					TrType         int     `xml:"TR_TYPE"`
-					Amount         float64 `xml:"AMOUNT"`
-					ExchRateTypeID string  `xml:"EXCH_RATE_TYPE_ID"`
-					Description    string  `xml:"DESCRIPTION"`
+					AccountNo      string `xml:"ACCOUNTNO"`
+					Department     string `xml:"DEPARTMENT"`
+					Location       string `xml:"LOCATION"`
+					Currency       string `xml:"CURRENCY"`
+					TrType         int    `xml:"TR_TYPE"`
+					Amount         Number `xml:"AMOUNT"`
+					ExchRateTypeID string `xml:"EXCH_RATE_TYPE_ID"`
+					Description    string `xml:"DESCRIPTION"`
 				} `xml:"ENTRIES>GLENTRY"`
 			} `xml:"GLBATCH"`
 		} `xml:"create"`
