@@ -52,4 +52,9 @@ type ResponseResult struct {
 	Function  string      `xml:"function"`
 	ControlID string      `xml:"controlid"`
 	Data      interface{} `xml:"data"`
+	// Data      struct {
+	// 	Listtype string `xml:"listtype,attr"`
+	// 	Count    int    `xml:"count"`
+	// } `xml:"data"`
+	ErrorMessage ErrorMessage `xml:"errormessage"`
 }

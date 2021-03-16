@@ -16,6 +16,7 @@ import (
 	"text/template"
 
 	"github.com/gofrs/uuid"
+	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
 )
 
@@ -274,6 +275,10 @@ func (c *Client) Do(req *http.Request, responseBody *Response) (*http.Response, 
 		return httpResp, err
 	}
 
+	if len(responseBody.Operation.Result.ErrorMessage.Errors) > 0 {
+		return httpResp, responseBody.Operation.Result.ErrorMessage
+	}
+
 	return httpResp, nil
 }
 
@@ -407,16 +412,9 @@ type ErrorResponse struct {
 	// HTTP response that caused this error
 	Response *http.Response `json:"-"`
 
-	XMLName xml.Name `xml:"response"`
-	Control struct {
-		Status string `xml:"status"`
-	} `xml:"control"`
-	ErrorMessage struct {
-		Errors []struct {
-			ErrorNo     string `xml:"errorno"`
-			Description string `xml:"description"`
-		} `xml:"error"`
-	} `xml:"errormessage"`
+	XMLName      xml.Name        `xml:"response"`
+	Control      ResponseControl `xml:"control"`
+	ErrorMessage ErrorMessage    `xml:"errormessage"`
 }
 
 func (r ErrorResponse) Error() string {
@@ -429,6 +427,47 @@ func (r ErrorResponse) Error() string {
 	}
 
 	return ""
+}
+
+type ErrorMessage struct {
+	XMLName xml.Name `xml:"errormessage"`
+
+	Errors []Error `xml:"error"`
+}
+
+func (em ErrorMessage) Error() string {
+	if len(em.Errors) == 0 {
+		return ""
+	}
+
+	var errors *multierror.Error
+	for _, err := range em.Errors {
+		errors = multierror.Append(errors, err)
+	}
+	return errors.Error()
+}
+
+type Error struct {
+	ErrorNo      string `xml:"errorno"`
+	Description  string `xml:"description"`
+	Description2 string `xml:"description2"`
+	Correction   string `xml:"correction"`
+}
+
+func (e Error) Error() string {
+	descriptions := []string{}
+	if e.Description != "" {
+		descriptions = append(descriptions, e.Description)
+	}
+	if e.Description2 != "" {
+		descriptions = append(descriptions, e.Description2)
+	}
+
+	if e.Correction != "" {
+		return fmt.Sprintf("%s: %s, (%s)", e.ErrorNo, strings.Join(descriptions, ", "), e.Correction)
+	} else {
+		return fmt.Sprintf("%s: %s", e.ErrorNo, strings.Join(descriptions, ", "))
+	}
 }
 
 func checkContentType(response *http.Response) error {
