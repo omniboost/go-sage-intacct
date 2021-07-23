@@ -81,7 +81,9 @@ func (r GetAPISessionRequest) NewGetAPISessionRequestContent() GetAPISessionRequ
 type GetAPISessionRequestContent struct {
 	Function struct {
 		ControlID     string `xml:"controlid,attr"`
-		GetAPISession string `xml:"getAPISession"`
+		GetAPISession struct {
+			LocationID string `xml:"locationid,omitempty"`
+		} `xml:"getAPISession"`
 	} `xml:"function"`
 }
 
