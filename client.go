@@ -194,7 +194,7 @@ func (c *Client) GetEndpointURL(path string, pathParams PathParams) url.URL {
 
 func (c *Client) NewRequest(ctx context.Context, method string, URL url.URL, body Request) (*http.Request, error) {
 	body.Control.SenderID = c.SenderID()
-	body.Control.SenderPassword = c.SenderPassword()
+	body.Control.SenderPassword = CData(c.SenderPassword())
 	body.Control.ControlID = c.GenerateControlID()
 
 	// convert body struct to json

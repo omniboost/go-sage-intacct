@@ -31,7 +31,7 @@ func (r *Request) SetSessionID(sessionID string) {
 
 type RequestControl struct {
 	SenderID          string `xml:"senderid"`
-	SenderPassword    string `xml:"password"`
+	SenderPassword    CData  `xml:"password"`
 	ControlID         string `xml:"controlid"`
 	UniqueID          bool   `xml:"uniqueid"`
 	DTDVersion        string `xml:"dtdversion"`
@@ -52,4 +52,14 @@ type RequestLogin struct {
 	UserID    string `xml:"userid"`
 	CompanyID string `xml:"companyid"`
 	Password  string `xml:"password"`
+}
+
+type CData string
+
+func (n CData) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return e.EncodeElement(struct {
+		S string `xml:",innerxml"`
+	}{
+		S: "<![CDATA[" + string(n) + "]]>",
+	}, start)
 }
