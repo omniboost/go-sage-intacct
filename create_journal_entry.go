@@ -92,6 +92,8 @@ type CreateJournalEntryRequestContent struct {
 					AccountNo      string `xml:"ACCOUNTNO"`
 					Department     string `xml:"DEPARTMENT,omitempty"`
 					Location       string `xml:"LOCATION,omitempty"`
+					ProjectID      string `xml:"PROJECTID"`
+					ClassID        string `xml:"CLASSID"`
 					Currency       string `xml:"CURRENCY"`
 					TrType         int    `xml:"TR_TYPE"`
 					Amount         Number `xml:"AMOUNT"`
