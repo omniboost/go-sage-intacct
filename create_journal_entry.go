@@ -90,8 +90,8 @@ type CreateJournalEntryRequestContent struct {
 				BatchTitle  string `xml:"BATCH_TITLE"`
 				Entries     []struct {
 					AccountNo      string `xml:"ACCOUNTNO"`
-					Department     string `xml:"DEPARTMENT"`
-					Location       string `xml:"LOCATION"`
+					Department     string `xml:"DEPARTMENT,omitempty"`
+					Location       string `xml:"LOCATION,omitempty"`
 					Currency       string `xml:"CURRENCY"`
 					TrType         int    `xml:"TR_TYPE"`
 					Amount         Number `xml:"AMOUNT"`
