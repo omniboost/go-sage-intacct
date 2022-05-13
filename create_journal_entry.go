@@ -88,6 +88,7 @@ type CreateJournalEntryRequestContent struct {
 				BatchDate   string `xml:"BATCH_DATE"`
 				ReverseDate string `xml:"REVERSEDATE,omitempty"`
 				BatchTitle  string `xml:"BATCH_TITLE"`
+				State       string `xml:"STATE,omitempty"`
 				Entries     []struct {
 					AccountNo      string `xml:"ACCOUNTNO"`
 					Department     string `xml:"DEPARTMENT,omitempty"`
