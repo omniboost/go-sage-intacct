@@ -120,65 +120,11 @@ func (r *GetAccountsRequest) NewResponseBody() *GetAccountsResponseBody {
 	body := &GetAccountsResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetAccountsResponseBody struct {
 	Response
-}
-
-func (r GetAccountsResponseBody) Data() *GetAccountsResponseData {
-	data, ok := r.Operation.Result.Data.(*GetAccountsResponseData)
-	if ok {
-		return data
-	}
-	return &GetAccountsResponseData{}
-}
-
-type GetAccountsResponseData struct {
-	ListType     string `xml:"listtype,attr"`
-	Count        int    `xml:"count,attr"`
-	TotalCount   int    `xml:"totalcount,attr"`
-	NumRemaining int    `xml:"numremaining,attr"`
-	ResultID     string `xml:"resultId,attr"`
-	GLAccounts   []struct {
-		RecordNo            int         `xml:"RECORDNO"`
-		AccountNo           string      `xml:"ACCOUNTNO"`
-		Title               string      `xml:"TITLE"`
-		AccountType         string      `xml:"ACCOUNTTYPE"`
-		NormalBalance       string      `xml:"NORMALBALANCE"`
-		ClosingType         string      `xml:"CLOSINGTYPE"`
-		ClosingAccountNo    string      `xml:"CLOSINGACCOUNTNO"`
-		ClosingAccountTitle string      `xml:"CLOSINGACCOUNTTITLE"`
-		Status              string      `xml:"STATUS"`
-		RequireDept         bool        `xml:"REQUIREDEPT"`
-		RequireLoc          bool        `xml:"REQUIRELOC"`
-		Taxable             bool        `xml:"TAXABLE"`
-		CategoryKey         string      `xml:"CATEGORYKEY"`
-		Category            string      `xml:"CATEGORY"`
-		TaxCode             string      `xml:"TAXCODE"`
-		MRCCode             string      `xml:"MRCCODE"`
-		CloseToAcctKey      string      `xml:"CLOSETOACCTKEY"`
-		AlternativeAccount  string      `xml:"ALTERNATIVEACCOUNT"`
-		WhenCreated         string      `xml:"WHENCREATED"`
-		WhenModified        string      `xml:"WHENMODIFIED"`
-		CreatedBy           int         `xml:"CREATEDBY"`
-		ModifiedBy          int         `xml:"MODIFIEDBY"`
-		SubledgerControlOn  bool        `xml:"SUBLEDGERCONTROLON"`
-		MegaEntityKey       interface{} `xml:"MEGAENTITYKEY"`
-		MegaEntityID        interface{} `xml:"MEGAENTITYID"`
-		MegaEntityName      interface{} `xml:"MEGAENTITYNAME"`
-		RequireProject      bool        `xml:"REQUIREPROJECT"`
-		RequireCustomer     bool        `xml:"REQUIRECUSTOMER"`
-		RequireVendor       bool        `xml:"REQUIREVENDOR"`
-		RequireClass        bool        `xml:"REQUIRECLASS"`
-	} `xml:"glaccount"`
-}
-
-func (r *GetAccountsRequest) NewResponseData() *GetAccountsResponseData {
-	return &GetAccountsResponseData{}
 }
 
 func (r *GetAccountsRequest) URL() url.URL {

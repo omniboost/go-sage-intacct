@@ -48,13 +48,30 @@ type ResponseAuthentication struct {
 }
 
 type ResponseResult struct {
-	Status    string      `xml:"status"`
-	Function  string      `xml:"function"`
-	ControlID string      `xml:"controlid"`
-	Data      interface{} `xml:"data"`
-	// Data      struct {
-	// 	Listtype string `xml:"listtype,attr"`
-	// 	Count    int    `xml:"count"`
-	// } `xml:"data"`
+	Status    string `xml:"status"`
+	Function  string `xml:"function"`
+	ControlID string `xml:"controlid"`
+	// Data      interface{} `xml:"data"`
+	Data struct {
+		Listtype     string `xml:"listtype,attr"`
+		Count        int    `xml:"count"`
+		TotalCount   int    `xml:"totalcount,attr"`
+		NumRemaining int    `xml:"numremaining,attr"`
+		ResultID     string `xml:"resultId,attr"`
+
+		API struct {
+			SessionID  string `xml:"sessionid"`
+			Endpoint   string `xml:"endpoint"`
+			LocationID string `xml:"locationid"`
+		} `xml:"api"`
+		GLAccounts  GLAccounts           `xml:"GLACCOUNT"`
+		Classes     Classes              `xml:"class"`
+		Customers   []struct{}           `xml:"customer"`
+		Departments Departments          `xml:"department"`
+		Type        ObjectDefinitionType `xml:"Type"`
+		Locations   Locations            `xml:"location"`
+		Projects    Projects             `xml:"project"`
+		TaxDetails  TaxDetails           `xml:"TAXDETAIL"`
+	} `xml:"data"`
 	ErrorMessage ErrorMessage `xml:"errormessage"`
 }

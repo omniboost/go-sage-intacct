@@ -91,6 +91,44 @@ func (et EqualTo) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.Encode(ee)
 }
 
+type Like struct {
+	Field string `xml:"field"`
+	Value string `xml:"value"`
+}
+
+func (l Like) IsFilter() bool {
+	return true
+}
+
+func (l Like) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	alias := struct {
+		XMLName xml.Name `xml:"like"`
+
+		Field string `xml:"field"`
+		Value string `xml:"value"`
+	}{Field: l.Field, Value: l.Value}
+	return e.Encode(alias)
+}
+
+type GreaterThan struct {
+	Field string `xml:"field"`
+	Value string `xml:"value"`
+}
+
+func (gt GreaterThan) IsFilter() bool {
+	return true
+}
+
+func (gt GreaterThan) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	alias := struct {
+		XMLName xml.Name `xml:"greaterthan"`
+
+		Field string `xml:"field"`
+		Value string `xml:"value"`
+	}{Field: gt.Field, Value: gt.Value}
+	return e.Encode(alias)
+}
+
 type Dimension struct {
 	RecordNo                          string `xml:"RECORDNO"`
 	Name                              string `xml:"NAME"`
@@ -302,4 +340,192 @@ type Project struct {
 	MegaEntityName         string `xml:"MEGAENTITYNAME"`
 	RCIP                   string `xml:"RCIP"`
 	CIPProject             string `xml:"CIP_PROJECT"`
+}
+
+type TaxDetails []TaxDetail
+
+type TaxDetail struct {
+	// Text           string `xml:",chardata"`
+	RECORDNO       string `xml:"RECORDNO"`
+	DETAILID       string `xml:"DETAILID"`
+	TAXUID         string `xml:"TAXUID"`
+	DESCRIPTION    string `xml:"DESCRIPTION"`
+	TAXTYPE        string `xml:"TAXTYPE"`
+	VALUE          string `xml:"VALUE"`
+	MINTAXABLE     string `xml:"MINTAXABLE"`
+	MAXTAXABLE     string `xml:"MAXTAXABLE"`
+	INCLUDE        string `xml:"INCLUDE"`
+	MINTAX         string `xml:"MINTAX"`
+	MAXTAX         string `xml:"MAXTAX"`
+	GLACCOUNT      string `xml:"GLACCOUNT"`
+	TAXAUTHORITY   string `xml:"TAXAUTHORITY"`
+	STATUS         string `xml:"STATUS"`
+	SYSGENERATED   string `xml:"SYSGENERATED"`
+	REVERSECHARGE  string `xml:"REVERSECHARGE"`
+	TAXRATE        string `xml:"TAXRATE"`
+	TAXSOLUTIONID  string `xml:"TAXSOLUTIONID"`
+	USEEXPENSEACCT string `xml:"USEEXPENSEACCT"`
+	MEGAENTITYKEY  string `xml:"MEGAENTITYKEY"`
+	MEGAENTITYID   string `xml:"MEGAENTITYID"`
+	MEGAENTITYNAME string `xml:"MEGAENTITYNAME"`
+	RECORDURL      string `xml:"RECORD_URL"`
+}
+
+type GLAccounts []GLAccount
+
+type GLAccount struct {
+	RecordNo            int         `xml:"RECORDNO"`
+	AccountNo           string      `xml:"ACCOUNTNO"`
+	Title               string      `xml:"TITLE"`
+	AccountType         string      `xml:"ACCOUNTTYPE"`
+	NormalBalance       string      `xml:"NORMALBALANCE"`
+	ClosingType         string      `xml:"CLOSINGTYPE"`
+	ClosingAccountNo    string      `xml:"CLOSINGACCOUNTNO"`
+	ClosingAccountTitle string      `xml:"CLOSINGACCOUNTTITLE"`
+	Status              string      `xml:"STATUS"`
+	RequireDept         bool        `xml:"REQUIREDEPT"`
+	RequireLoc          bool        `xml:"REQUIRELOC"`
+	Taxable             bool        `xml:"TAXABLE"`
+	CategoryKey         string      `xml:"CATEGORYKEY"`
+	Category            string      `xml:"CATEGORY"`
+	TaxCode             string      `xml:"TAXCODE"`
+	MRCCode             string      `xml:"MRCCODE"`
+	CloseToAcctKey      string      `xml:"CLOSETOACCTKEY"`
+	AlternativeAccount  string      `xml:"ALTERNATIVEACCOUNT"`
+	WhenCreated         string      `xml:"WHENCREATED"`
+	WhenModified        string      `xml:"WHENMODIFIED"`
+	CreatedBy           int         `xml:"CREATEDBY"`
+	ModifiedBy          int         `xml:"MODIFIEDBY"`
+	SubledgerControlOn  bool        `xml:"SUBLEDGERCONTROLON"`
+	MegaEntityKey       interface{} `xml:"MEGAENTITYKEY"`
+	MegaEntityID        interface{} `xml:"MEGAENTITYID"`
+	MegaEntityName      interface{} `xml:"MEGAENTITYNAME"`
+	RequireProject      bool        `xml:"REQUIREPROJECT"`
+	RequireCustomer     bool        `xml:"REQUIRECUSTOMER"`
+	RequireVendor       bool        `xml:"REQUIREVENDOR"`
+	RequireClass        bool        `xml:"REQUIRECLASS"`
+}
+
+type Departments []Department
+
+type Department struct {
+	DepartmentID   int    `xml:"DEPARTMENTID"`
+	RecordNo       int    `xml:"RECORDNO"`
+	Title          string `xml:"TITLE"`
+	ParentKey      string `xml:"PARENTKEY"`
+	ParentID       string `xml:"PARENTID"`
+	SupervisorKey  string `xml:"SUPERVISORKEY"`
+	SupervisorID   string `xml:"SUPERVISORID"`
+	WhenCreated    string `xml:"WHENCREATED"`
+	WhenModified   string `xml:"WHENMODIFIED"`
+	SupervisorName string `xml:"SUPERVISORNAME"`
+	Status         string `xml:"STATUS"`
+	CustTitle      string `xml:"CUSTTITLE"`
+	CreatedBy      int    `xml:"CREATEDBY"`
+	ModifiedBy     int    `xml:"MODIFIEDBY"`
+}
+
+type ObjectDefinitionType struct {
+	Name         string `xml:"Name,attr"`
+	DocumentType string `xml:"DocumentType,attr"`
+	Fields       struct {
+		Field []struct {
+			ID          string `xml:"ID"`
+			LABEL       string `xml:"LABEL"`
+			DESCRIPTION string `xml:"DESCRIPTION"`
+			REQUIRED    string `xml:"REQUIRED"`
+			READONLY    string `xml:"READONLY"`
+			DATATYPE    string `xml:"DATATYPE"`
+			ISCUSTOM    string `xml:"ISCUSTOM"`
+			VALIDVALUES struct {
+				VALIDVALUE []string `xml:"VALIDVALUE"`
+			} `xml:"VALIDVALUES"`
+		} `xml:"Field"`
+	} `xml:"Fields"`
+	Relationships struct {
+		Relationship []struct {
+			OBJECTPATH       string `xml:"OBJECTPATH"`
+			OBJECTNAME       string `xml:"OBJECTNAME"`
+			LABEL            string `xml:"LABEL"`
+			RELATIONSHIPTYPE string `xml:"RELATIONSHIPTYPE"`
+			RELATEDBY        string `xml:"RELATEDBY"`
+		} `xml:"Relationship"`
+	} `xml:"Relationships"`
+}
+
+type Locations []Location
+
+type Location struct {
+	LocationID                        string `xml:"LOCATIONID"`
+	RecordNo                          string `xml:"RECORDNO"`
+	Name                              string `xml:"NAME"`
+	ParentID                          string `xml:"PARENTID"`
+	SupervisorName                    string `xml:"SUPERVISORNAME"`
+	SupervisorID                      int    `xml:"SUPERVISORID"`
+	ContactinfoContactName            string `xml:"CONTACTINFO.CONTACTNAME"`
+	ContactinfoPrintAs                string `xml:"CONTACTINFO.PRINTAS"`
+	ContactinfoPhone1                 string `xml:"CONTACTINFO.PHONE1"`
+	ContactinfoPhon2                  string `xml:"CONTACTINFO.PHONE2"`
+	ContactinfoEmail1                 string `xml:"CONTACTINFO.EMAIL1"`
+	ContactinfoEmail2                 string `xml:"CONTACTINFO.EMAIL2"`
+	ContactinfoFax                    string `xml:"CONTACTINFO.FAX"`
+	ContactinfoMailaddressAddress1    string `xml:"CONTACTINFO.MAILADDRESS.ADDRESS1"`
+	ContactinfoMailaddressAddress2    string `xml:"CONTACTINFO.MAILADDRESS.ADDRESS2"`
+	ContactinfoMailaddressCity        string `xml:"CONTACTINFO.MAILADDRESS.CITY"`
+	ContactinfoMailaddressState       string `xml:"CONTACTINFO.MAILADDRESS.STATE"`
+	CONTACTINFOMAILADDRESSZIP         string `xml:"CONTACTINFO.MAILADDRESS.ZIP"`
+	CONTACTINFOMAILADDRESSCOUNTRY     string `xml:"CONTACTINFO.MAILADDRESS.COUNTRY"`
+	CONTACTINFOMAILADDRESSCOUNTRYCODE string `xml:"CONTACTINFO.MAILADDRESS.COUNTRYCODE"`
+	STARTDATE                         string `xml:"STARTDATE"`
+	ENDDATE                           string `xml:"ENDDATE"`
+	SHIPTOCONTACTNAME                 string `xml:"SHIPTO.CONTACTNAME"`
+	SHIPTOPHONE1                      string `xml:"SHIPTO.PHONE1"`
+	SHIPTOPHONE2                      string `xml:"SHIPTO.PHONE2"`
+	SHIPTOMAILADDRESSADDRESS1         string `xml:"SHIPTO.MAILADDRESS.ADDRESS1"`
+	SHIPTOMAILADDRESSADDRESS2         string `xml:"SHIPTO.MAILADDRESS.ADDRESS2"`
+	SHIPTOMAILADDRESSCITY             string `xml:"SHIPTO.MAILADDRESS.CITY"`
+	SHIPTOMAILADDRESSSTATE            string `xml:"SHIPTO.MAILADDRESS.STATE"`
+	SHIPTOMAILADDRESSZIP              string `xml:"SHIPTO.MAILADDRESS.ZIP"`
+	SHIPTOMAILADDRESSCOUNTRY          string `xml:"SHIPTO.MAILADDRESS.COUNTRY"`
+	SHIPTOMAILADDRESSCOUNTRYCODE      string `xml:"SHIPTO.MAILADDRESS.COUNTRYCODE"`
+	STATUS                            string `xml:"STATUS"`
+	WHENCREATED                       string `xml:"WHENCREATED"`
+	WHENMODIFIED                      string `xml:"WHENMODIFIED"`
+	FederalID                         string `xml:"FEDERALID"`
+	FirstMonth                        string `xml:"FIRSTMONTH"`
+	WeekStart                         string `xml:"WEEKSTART"`
+	IEPAYABLEACCOUNT                  string `xml:"IEPAYABLE.ACCOUNT"`
+	IEPAYABLENUMBER                   string `xml:"IEPAYABLE.NUMBER"`
+	IERECEIVABLEACCOUNT               string `xml:"IERECEIVABLE.ACCOUNT"`
+	IERECEIVABLENUMBER                string `xml:"IERECEIVABLE.NUMBER"`
+	MessageText                       string `xml:"MESSAGE_TEXT"`
+	MarketingText                     string `xml:"MARKETING_TEXT"`
+	FOOTNOTETEXT                      string `xml:"FOOTNOTETEXT"`
+	REPORTPRINTAS                     string `xml:"REPORTPRINTAS"`
+	IsRoot                            string `xml:"ISROOT"`
+	RESERVEAMT                        string `xml:"RESERVEAMT"`
+	VendorName                        string `xml:"VENDORNAME"`
+	VendorID                          int    `xml:"VENDORID"`
+	CustomerID                        int    `xml:"CUSTOMERID"`
+	CustomerName                      string `xml:"CUSTOMERNAME"`
+	Currency                          string `xml:"CURRENCY"`
+	Entity                            string `xml:"ENTITY"`
+	ENTITYRECORDNO                    string `xml:"ENTITYRECORDNO"`
+	HASIERELATION                     string `xml:"HAS_IE_RELATION"`
+	CustTitle                         string `xml:"CUSTTITLE"`
+	BusinessDays                      string `xml:"BUSINESSDAYS"`
+	Weekend                           string `xml:"WEEKENDS"`
+	FIRSTMONTHTAX                     string `xml:"FIRSTMONTHTAX"`
+	ContactKey                        string `xml:"CONTACTKEY"`
+	SUPERVISORKEY                     string `xml:"SUPERVISORKEY"`
+	ParentKey                         string `xml:"PARENTKEY"`
+	SHIPTOKEY                         string `xml:"SHIPTOKEY"`
+	IEPAYABLEACCTKEY                  string `xml:"IEPAYABLEACCTKEY"`
+	IERECEIVABLEACCTKEY               string `xml:"IERECEIVABLEACCTKEY"`
+	VENDENTITY                        string `xml:"VENDENTITY"`
+	CUSTENTITY                        string `xml:"CUSTENTITY"`
+	TaxID                             string `xml:"TAXID"`
+	CreatedBy                         string `xml:"CREATEDBY"`
+	ModifiedBy                        string `xml:"MODIFIEDBY"`
+	ADDRESSCOUNTRYDEFAULT             string `xml:"ADDRESSCOUNTRYDEFAULT"`
 }

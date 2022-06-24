@@ -121,35 +121,11 @@ func (r *GetCustomersRequest) NewResponseBody() *GetCustomersResponseBody {
 	body := &GetCustomersResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetCustomersResponseBody struct {
 	Response
-}
-
-func (r GetCustomersResponseBody) Data() *GetCustomersResponseData {
-	data, ok := r.Operation.Result.Data.(*GetCustomersResponseData)
-	if ok {
-		return data
-	}
-	return &GetCustomersResponseData{}
-}
-
-type GetCustomersResponseData struct {
-	ListType     string `xml:"listtype,attr"`
-	Count        int    `xml:"count,attr"`
-	TotalCount   int    `xml:"totalcount,attr"`
-	NumRemaining int    `xml:"numremaining,attr"`
-	ResultID     string `xml:"resultId,attr"`
-	Customers    []struct {
-	} `xml:"customer"`
-}
-
-func (r *GetCustomersRequest) NewResponseData() *GetCustomersResponseData {
-	return &GetCustomersResponseData{}
 }
 
 func (r *GetCustomersRequest) URL() url.URL {

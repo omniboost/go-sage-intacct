@@ -121,57 +121,11 @@ func (r *GetJournalEntryLineObjectDefinitionRequest) NewResponseBody() *GetJourn
 	body := &GetJournalEntryLineObjectDefinitionResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetJournalEntryLineObjectDefinitionResponseBody struct {
 	Response
-}
-
-func (r GetJournalEntryLineObjectDefinitionResponseBody) Data() *GetJournalEntryLineObjectDefinitionResponseData {
-	data, ok := r.Operation.Result.Data.(*GetJournalEntryLineObjectDefinitionResponseData)
-	if ok {
-		return data
-	}
-	return &GetJournalEntryLineObjectDefinitionResponseData{}
-}
-
-type GetJournalEntryLineObjectDefinitionResponseData struct {
-	Listtype string `xml:"listtype,attr"`
-	Count    string `xml:"count,attr"`
-	Type     struct {
-		Name         string `xml:"Name,attr"`
-		DocumentType string `xml:"DocumentType,attr"`
-		Fields       struct {
-			Field []struct {
-				ID          string `xml:"ID"`
-				LABEL       string `xml:"LABEL"`
-				DESCRIPTION string `xml:"DESCRIPTION"`
-				REQUIRED    string `xml:"REQUIRED"`
-				READONLY    string `xml:"READONLY"`
-				DATATYPE    string `xml:"DATATYPE"`
-				ISCUSTOM    string `xml:"ISCUSTOM"`
-				VALIDVALUES struct {
-					VALIDVALUE []string `xml:"VALIDVALUE"`
-				} `xml:"VALIDVALUES"`
-			} `xml:"Field"`
-		} `xml:"Fields"`
-		Relationships struct {
-			Relationship []struct {
-				OBJECTPATH       string `xml:"OBJECTPATH"`
-				OBJECTNAME       string `xml:"OBJECTNAME"`
-				LABEL            string `xml:"LABEL"`
-				RELATIONSHIPTYPE string `xml:"RELATIONSHIPTYPE"`
-				RELATEDBY        string `xml:"RELATEDBY"`
-			} `xml:"Relationship"`
-		} `xml:"Relationships"`
-	} `xml:"Type"`
-}
-
-func (r *GetJournalEntryLineObjectDefinitionRequest) NewResponseData() *GetJournalEntryLineObjectDefinitionResponseData {
-	return &GetJournalEntryLineObjectDefinitionResponseData{}
 }
 
 func (r *GetJournalEntryLineObjectDefinitionRequest) URL() url.URL {

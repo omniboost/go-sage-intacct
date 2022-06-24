@@ -84,12 +84,14 @@ type CreateJournalEntryRequestContent struct {
 		ControlID string `xml:"controlid,attr"`
 		Create    struct {
 			GLBatch struct {
-				Journal     string `xml:"JOURNAL"`
-				BatchDate   string `xml:"BATCH_DATE"`
-				ReverseDate string `xml:"REVERSEDATE,omitempty"`
-				BatchTitle  string `xml:"BATCH_TITLE"`
-				State       string `xml:"STATE,omitempty"`
-				Entries     []struct {
+				Journal         string `xml:"JOURNAL"`
+				BatchDate       string `xml:"BATCH_DATE"`
+				ReverseDate     string `xml:"REVERSEDATE,omitempty"`
+				BatchTitle      string `xml:"BATCH_TITLE"`
+				State           string `xml:"STATE,omitempty"`
+				TaxImplications string `xml:"TAXIMPLICATIONS,omitempty"`
+				TaxSolutionID   string `xml:"TAXSOLUTIONID,omitempty"`
+				Entries         []struct {
 					AccountNo      string `xml:"ACCOUNTNO"`
 					Department     string `xml:"DEPARTMENT,omitempty"`
 					Location       string `xml:"LOCATION,omitempty"`
@@ -100,6 +102,10 @@ type CreateJournalEntryRequestContent struct {
 					Amount         Number `xml:"AMOUNT"`
 					ExchRateTypeID string `xml:"EXCH_RATE_TYPE_ID"`
 					Description    string `xml:"DESCRIPTION"`
+					TaxEntries     []struct {
+						TrxTax   Number `xml:"TRX_TAX"`
+						DetailID string `xml:"DETAILID"`
+					} `xml:"TAXENTRIES>TAXENTRY"`
 				} `xml:"ENTRIES>GLENTRY"`
 			} `xml:"GLBATCH"`
 		} `xml:"create"`
@@ -142,28 +148,11 @@ func (r *CreateJournalEntryRequest) NewResponseBody() *CreateJournalEntryRespons
 	body := &CreateJournalEntryResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type CreateJournalEntryResponseBody struct {
 	Response
-}
-
-func (r CreateJournalEntryResponseBody) Data() *CreateJournalEntryResponseData {
-	data, ok := r.Operation.Result.Data.(*CreateJournalEntryResponseData)
-	if ok {
-		return data
-	}
-	return &CreateJournalEntryResponseData{}
-}
-
-type CreateJournalEntryResponseData struct {
-}
-
-func (r *CreateJournalEntryRequest) NewResponseData() *CreateJournalEntryResponseData {
-	return &CreateJournalEntryResponseData{}
 }
 
 func (r *CreateJournalEntryRequest) URL() url.URL {

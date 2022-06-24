@@ -2,14 +2,14 @@ package intacct_test
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"testing"
 )
 
-func TestGetProjects(t *testing.T) {
-	req := client.NewGetProjectsRequest()
+func TestGetInvoiceObjectDefinition(t *testing.T) {
+	req := client.NewGetInvoiceObjectDefinitionRequest()
+
 	content := req.RequestBody().Content()
-	content.Function.ReadByQuery.PageSize = 1000
 	req.RequestBody().Operation.Content = content
 	resp, err := req.Do()
 	if err != nil {
@@ -17,5 +17,5 @@ func TestGetProjects(t *testing.T) {
 	}
 
 	b, _ := json.MarshalIndent(resp, "", "  ")
-	log.Println(string(b))
+	fmt.Println(string(b))
 }

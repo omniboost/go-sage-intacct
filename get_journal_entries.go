@@ -121,28 +121,11 @@ func (r *GetJournalEntriesRequest) NewResponseBody() *GetJournalEntriesResponseB
 	body := &GetJournalEntriesResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetJournalEntriesResponseBody struct {
 	Response
-}
-
-func (r GetJournalEntriesResponseBody) Data() *GetJournalEntriesResponseData {
-	data, ok := r.Operation.Result.Data.(*GetJournalEntriesResponseData)
-	if ok {
-		return data
-	}
-	return &GetJournalEntriesResponseData{}
-}
-
-type GetJournalEntriesResponseData struct {
-}
-
-func (r *GetJournalEntriesRequest) NewResponseData() *GetJournalEntriesResponseData {
-	return &GetJournalEntriesResponseData{}
 }
 
 func (r *GetJournalEntriesRequest) URL() url.URL {

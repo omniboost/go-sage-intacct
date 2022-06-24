@@ -120,49 +120,11 @@ func (r *GetDepartmentsRequest) NewResponseBody() *GetDepartmentsResponseBody {
 	body := &GetDepartmentsResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetDepartmentsResponseBody struct {
 	Response
-}
-
-func (r GetDepartmentsResponseBody) Data() *GetDepartmentsResponseData {
-	data, ok := r.Operation.Result.Data.(*GetDepartmentsResponseData)
-	if ok {
-		return data
-	}
-	return &GetDepartmentsResponseData{}
-}
-
-type GetDepartmentsResponseData struct {
-	ListType     string `xml:"listtype,attr"`
-	Count        int    `xml:"count,attr"`
-	TotalCount   int    `xml:"totalcount,attr"`
-	NumRemaining int    `xml:"numremaining,attr"`
-	ResultID     string `xml:"resultId,attr"`
-	Departments  []struct {
-		DepartmentID   int    `xml:"DEPARTMENTID"`
-		RecordNo       int    `xml:"RECORDNO"`
-		Title          string `xml:"TITLE"`
-		ParentKey      string `xml:"PARENTKEY"`
-		ParentID       string `xml:"PARENTID"`
-		SupervisorKey  string `xml:"SUPERVISORKEY"`
-		SupervisorID   string `xml:"SUPERVISORID"`
-		WhenCreated    string `xml:"WHENCREATED"`
-		WhenModified   string `xml:"WHENMODIFIED"`
-		SupervisorName string `xml:"SUPERVISORNAME"`
-		Status         string `xml:"STATUS"`
-		CustTitle      string `xml:"CUSTTITLE"`
-		CreatedBy      int    `xml:"CREATEDBY"`
-		ModifiedBy     int    `xml:"MODIFIEDBY"`
-	} `xml:"department"`
-}
-
-func (r *GetDepartmentsRequest) NewResponseData() *GetDepartmentsResponseData {
-	return &GetDepartmentsResponseData{}
 }
 
 func (r *GetDepartmentsRequest) URL() url.URL {

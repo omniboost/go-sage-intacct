@@ -118,28 +118,11 @@ func (r *GetDimensionsRequest) NewResponseBody() *GetDimensionsResponseBody {
 	body := &GetDimensionsResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetDimensionsResponseBody struct {
 	Response
-}
-
-func (r GetDimensionsResponseBody) Data() *GetDimensionsResponseData {
-	data, ok := r.Operation.Result.Data.(*GetDimensionsResponseData)
-	if ok {
-		return data
-	}
-	return &GetDimensionsResponseData{}
-}
-
-type GetDimensionsResponseData struct {
-}
-
-func (r *GetDimensionsRequest) NewResponseData() *GetDimensionsResponseData {
-	return &GetDimensionsResponseData{}
 }
 
 func (r *GetDimensionsRequest) URL() url.URL {

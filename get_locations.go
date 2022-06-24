@@ -120,107 +120,11 @@ func (r *GetLocationsRequest) NewResponseBody() *GetLocationsResponseBody {
 	body := &GetLocationsResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetLocationsResponseBody struct {
 	Response
-}
-
-func (r GetLocationsResponseBody) Data() *GetLocationsResponseData {
-	data, ok := r.Operation.Result.Data.(*GetLocationsResponseData)
-	if ok {
-		return data
-	}
-	return &GetLocationsResponseData{}
-}
-
-type GetLocationsResponseData struct {
-	ListType     string `xml:"listtype,attr"`
-	Count        int    `xml:"count,attr"`
-	TotalCount   int    `xml:"totalcount,attr"`
-	NumRemaining int    `xml:"numremaining,attr"`
-	ResultID     string `xml:"resultId,attr"`
-	Locations    []struct {
-		LocationID                        string `xml:"LOCATIONID"`
-		RecordNo                          string `xml:"RECORDNO"`
-		Name                              string `xml:"NAME"`
-		ParentID                          string `xml:"PARENTID"`
-		SupervisorName                    string `xml:"SUPERVISORNAME"`
-		SupervisorID                      int    `xml:"SUPERVISORID"`
-		ContactinfoContactName            string `xml:"CONTACTINFO.CONTACTNAME"`
-		ContactinfoPrintAs                string `xml:"CONTACTINFO.PRINTAS"`
-		ContactinfoPhone1                 string `xml:"CONTACTINFO.PHONE1"`
-		ContactinfoPhon2                  string `xml:"CONTACTINFO.PHONE2"`
-		ContactinfoEmail1                 string `xml:"CONTACTINFO.EMAIL1"`
-		ContactinfoEmail2                 string `xml:"CONTACTINFO.EMAIL2"`
-		ContactinfoFax                    string `xml:"CONTACTINFO.FAX"`
-		ContactinfoMailaddressAddress1    string `xml:"CONTACTINFO.MAILADDRESS.ADDRESS1"`
-		ContactinfoMailaddressAddress2    string `xml:"CONTACTINFO.MAILADDRESS.ADDRESS2"`
-		ContactinfoMailaddressCity        string `xml:"CONTACTINFO.MAILADDRESS.CITY"`
-		ContactinfoMailaddressState       string `xml:"CONTACTINFO.MAILADDRESS.STATE"`
-		CONTACTINFOMAILADDRESSZIP         string `xml:"CONTACTINFO.MAILADDRESS.ZIP"`
-		CONTACTINFOMAILADDRESSCOUNTRY     string `xml:"CONTACTINFO.MAILADDRESS.COUNTRY"`
-		CONTACTINFOMAILADDRESSCOUNTRYCODE string `xml:"CONTACTINFO.MAILADDRESS.COUNTRYCODE"`
-		STARTDATE                         string `xml:"STARTDATE"`
-		ENDDATE                           string `xml:"ENDDATE"`
-		SHIPTOCONTACTNAME                 string `xml:"SHIPTO.CONTACTNAME"`
-		SHIPTOPHONE1                      string `xml:"SHIPTO.PHONE1"`
-		SHIPTOPHONE2                      string `xml:"SHIPTO.PHONE2"`
-		SHIPTOMAILADDRESSADDRESS1         string `xml:"SHIPTO.MAILADDRESS.ADDRESS1"`
-		SHIPTOMAILADDRESSADDRESS2         string `xml:"SHIPTO.MAILADDRESS.ADDRESS2"`
-		SHIPTOMAILADDRESSCITY             string `xml:"SHIPTO.MAILADDRESS.CITY"`
-		SHIPTOMAILADDRESSSTATE            string `xml:"SHIPTO.MAILADDRESS.STATE"`
-		SHIPTOMAILADDRESSZIP              string `xml:"SHIPTO.MAILADDRESS.ZIP"`
-		SHIPTOMAILADDRESSCOUNTRY          string `xml:"SHIPTO.MAILADDRESS.COUNTRY"`
-		SHIPTOMAILADDRESSCOUNTRYCODE      string `xml:"SHIPTO.MAILADDRESS.COUNTRYCODE"`
-		STATUS                            string `xml:"STATUS"`
-		WHENCREATED                       string `xml:"WHENCREATED"`
-		WHENMODIFIED                      string `xml:"WHENMODIFIED"`
-		FederalID                         string `xml:"FEDERALID"`
-		FirstMonth                        string `xml:"FIRSTMONTH"`
-		WeekStart                         string `xml:"WEEKSTART"`
-		IEPAYABLEACCOUNT                  string `xml:"IEPAYABLE.ACCOUNT"`
-		IEPAYABLENUMBER                   string `xml:"IEPAYABLE.NUMBER"`
-		IERECEIVABLEACCOUNT               string `xml:"IERECEIVABLE.ACCOUNT"`
-		IERECEIVABLENUMBER                string `xml:"IERECEIVABLE.NUMBER"`
-		MessageText                       string `xml:"MESSAGE_TEXT"`
-		MarketingText                     string `xml:"MARKETING_TEXT"`
-		FOOTNOTETEXT                      string `xml:"FOOTNOTETEXT"`
-		REPORTPRINTAS                     string `xml:"REPORTPRINTAS"`
-		IsRoot                            string `xml:"ISROOT"`
-		RESERVEAMT                        string `xml:"RESERVEAMT"`
-		VendorName                        string `xml:"VENDORNAME"`
-		VendorID                          int    `xml:"VENDORID"`
-		CustomerID                        int    `xml:"CUSTOMERID"`
-		CustomerName                      string `xml:"CUSTOMERNAME"`
-		Currency                          string `xml:"CURRENCY"`
-		Entity                            string `xml:"ENTITY"`
-		ENTITYRECORDNO                    string `xml:"ENTITYRECORDNO"`
-		HASIERELATION                     string `xml:"HAS_IE_RELATION"`
-		CustTitle                         string `xml:"CUSTTITLE"`
-		BusinessDays                      string `xml:"BUSINESSDAYS"`
-		Weekend                           string `xml:"WEEKENDS"`
-		FIRSTMONTHTAX                     string `xml:"FIRSTMONTHTAX"`
-		ContactKey                        string `xml:"CONTACTKEY"`
-		SUPERVISORKEY                     string `xml:"SUPERVISORKEY"`
-		ParentKey                         string `xml:"PARENTKEY"`
-		SHIPTOKEY                         string `xml:"SHIPTOKEY"`
-		IEPAYABLEACCTKEY                  string `xml:"IEPAYABLEACCTKEY"`
-		IERECEIVABLEACCTKEY               string `xml:"IERECEIVABLEACCTKEY"`
-		VENDENTITY                        string `xml:"VENDENTITY"`
-		CUSTENTITY                        string `xml:"CUSTENTITY"`
-		TaxID                             string `xml:"TAXID"`
-		CreatedBy                         string `xml:"CREATEDBY"`
-		ModifiedBy                        string `xml:"MODIFIEDBY"`
-		ADDRESSCOUNTRYDEFAULT             string `xml:"ADDRESSCOUNTRYDEFAULT"`
-	} `xml:"location"`
-}
-
-func (r *GetLocationsRequest) NewResponseData() *GetLocationsResponseData {
-	return &GetLocationsResponseData{}
 }
 
 func (r *GetLocationsRequest) URL() url.URL {

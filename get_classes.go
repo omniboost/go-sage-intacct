@@ -120,34 +120,11 @@ func (r *GetClassesRequest) NewResponseBody() *GetClassesResponseBody {
 	body := &GetClassesResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetClassesResponseBody struct {
 	Response
-}
-
-func (r GetClassesResponseBody) Data() *GetClassesResponseData {
-	data, ok := r.Operation.Result.Data.(*GetClassesResponseData)
-	if ok {
-		return data
-	}
-	return &GetClassesResponseData{}
-}
-
-type GetClassesResponseData struct {
-	ListType     string  `xml:"listtype,attr"`
-	Count        int     `xml:"count,attr"`
-	TotalCount   int     `xml:"totalcount,attr"`
-	NumRemaining int     `xml:"numremaining,attr"`
-	ResultID     string  `xml:"resultId,attr"`
-	Classes      Classes `xml:"class"`
-}
-
-func (r *GetClassesRequest) NewResponseData() *GetClassesResponseData {
-	return &GetClassesResponseData{}
 }
 
 func (r *GetClassesRequest) URL() url.URL {

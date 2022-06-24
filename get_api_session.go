@@ -124,33 +124,11 @@ func (r *GetAPISessionRequest) NewResponseBody() *GetAPISessionResponseBody {
 	body := &GetAPISessionResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetAPISessionResponseBody struct {
 	Response
-}
-
-func (r GetAPISessionResponseBody) Data() *GetAPISessionResponseData {
-	data, ok := r.Operation.Result.Data.(*GetAPISessionResponseData)
-	if ok {
-		return data
-	}
-	return &GetAPISessionResponseData{}
-}
-
-type GetAPISessionResponseData struct {
-	API struct {
-		SessionID  string `xml:"sessionid"`
-		Endpoint   string `xml:"endpoint"`
-		LocationID string `xml:"locationid"`
-	} `xml:"api"`
-}
-
-func (r *GetAPISessionRequest) NewResponseData() *GetAPISessionResponseData {
-	return &GetAPISessionResponseData{}
 }
 
 func (r *GetAPISessionRequest) URL() url.URL {

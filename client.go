@@ -404,7 +404,7 @@ func (c *Client) NewSessionID() (string, error) {
 		return "", err
 	}
 
-	return resp.Data().API.SessionID, nil
+	return resp.Operation.Result.Data.API.SessionID, nil
 
 }
 

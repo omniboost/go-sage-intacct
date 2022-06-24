@@ -92,12 +92,12 @@ type GetProjectsRequestBody struct {
 	Request
 }
 
-func (r GetProjectsRequestBody) Content() GetProjectsRequestContent {
+func (r GetProjectsRequestBody) Content() *GetProjectsRequestContent {
 	data, ok := r.Operation.Content.(GetProjectsRequestContent)
 	if ok {
-		return data
+		return &data
 	}
-	return GetProjectsRequestContent{}
+	return &GetProjectsRequestContent{}
 }
 
 func (r *GetProjectsRequest) NewRequestBody() GetProjectsRequestBody {
@@ -120,34 +120,11 @@ func (r *GetProjectsRequest) NewResponseBody() *GetProjectsResponseBody {
 	body := &GetProjectsResponseBody{
 		Response: NewResponse(),
 	}
-
-	body.Response.Operation.Result.Data = r.NewResponseData()
 	return body
 }
 
 type GetProjectsResponseBody struct {
 	Response
-}
-
-func (r GetProjectsResponseBody) Data() *GetProjectsResponseData {
-	data, ok := r.Operation.Result.Data.(*GetProjectsResponseData)
-	if ok {
-		return data
-	}
-	return &GetProjectsResponseData{}
-}
-
-type GetProjectsResponseData struct {
-	ListType     string   `xml:"listtype,attr"`
-	Count        int      `xml:"count,attr"`
-	TotalCount   int      `xml:"totalcount,attr"`
-	NumRemaining int      `xml:"numremaining,attr"`
-	ResultID     string   `xml:"resultId,attr"`
-	Projects     Projects `xml:"project"`
-}
-
-func (r *GetProjectsRequest) NewResponseData() *GetProjectsResponseData {
-	return &GetProjectsResponseData{}
 }
 
 func (r *GetProjectsRequest) URL() url.URL {
@@ -178,3 +155,25 @@ func (r *GetProjectsRequest) Do() (GetProjectsResponseBody, error) {
 	_, err = r.client.Do(req, &responseBody.Response)
 	return *responseBody, err
 }
+
+// func (r *GetProjectsRequest) All() (GetProjectsResponseBody, error) {
+// 	resp, err := r.Do()
+// 	if err != nil {
+// 		return resp, err
+// 	}
+
+// 	concat := resp.Data().Projects
+
+// 	for resp.Data().NumRemaining != 0 {
+// 		r.RequestBody().Content().Function.ReadByQuery.ResultID = resp.Data().ResultID
+// 		resp, err = r.Do()
+// 		if err != nil {
+// 			return resp, err
+// 		}
+
+// 		concat = append(concat, resp.Data().Projects...)
+// 	}
+
+// 	resp.Data().Projects = concat
+// 	return resp, nil
+// }
