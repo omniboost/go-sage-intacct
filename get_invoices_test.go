@@ -155,9 +155,11 @@ func TestGetInvoices(t *testing.T) {
 		"MEGAENTITYNAME",
 		"RECORD_URL",
 	}...)
-	// content.Function.Query.Filters = append(content.Function.Query.Filters, intacct.EqualTo{Field: "DOCNUMBER", Value: "SI000018"})
-	// content.Function.Query.Filters = append(content.Function.Query.Filters, intacct.Like{Field: "DOCNUMBER", Value: "%0%"})
-	content.Function.Query.Filters = append(content.Function.Query.Filters, intacct.GreaterThan{Field: "WHENCREATED", Value: "01/01/2022"})
+	content.Function.Query.Filters = append(
+		content.Function.Query.Filters,
+		intacct.EqualTo{Field: "RECORDID", Value: "SI000018"},
+	)
+	// content.Function.Query.Filters = append(content.Function.Query.Filters, intacct.GreaterThan{Field: "WHENCREATED", Value: "01/01/2022"})
 	// content.Function.ReadByQuery.Select = []string{"JOURNAL"}
 	req.RequestBody().Operation.Content = content
 	resp, err := req.Do()

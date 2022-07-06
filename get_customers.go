@@ -76,16 +76,19 @@ func (r *GetCustomersRequest) Method() string {
 
 func (r GetCustomersRequest) NewContent() GetCustomersRequestContent {
 	content := GetCustomersRequestContent{}
-	content.Function.ReadByQuery.Object = "CUSTOMER"
-	content.Function.ReadByQuery.Fields = "*"
-	content.Function.ReadByQuery.Query = NoQuery{}
+	content.Function.Query.Object = "CUSTOMER"
 	return content
 }
 
 type GetCustomersRequestContent struct {
 	Function struct {
-		ControlID   string      `xml:"controlid,attr"`
-		ReadByQuery ReadByQuery `xml:"readByQuery"`
+		ControlID string `xml:"controlid,attr"`
+		Query     struct {
+			Object  string  `xml:"object"`
+			Select  Select  `xml:"select"`
+			Filters Filters `xml:"filter"`
+			// Select Select `xml:"select"`
+		} `xml:"query"`
 	} `xml:"function"`
 }
 

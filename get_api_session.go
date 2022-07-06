@@ -112,7 +112,9 @@ func (r *GetAPISessionRequest) NewRequestBody() GetAPISessionRequestBody {
 		Password:  r.client.UserPassword(),
 		CompanyID: r.client.CompanyID(),
 	}
-	body.Operation.Content = r.NewGetAPISessionRequestContent()
+	content := r.NewGetAPISessionRequestContent()
+	content.Function.GetAPISession.LocationID = r.client.LocationID()
+	body.Operation.Content = content
 	return body
 }
 

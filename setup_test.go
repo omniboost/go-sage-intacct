@@ -20,9 +20,11 @@ func TestMain(m *testing.M) {
 	userID := os.Getenv("USER_ID")
 	userPassword := os.Getenv("USER_PASSWORD")
 	companyID := os.Getenv("COMPANY_ID")
+	locationID := os.Getenv("LOCATION_ID")
 	debug := os.Getenv("DEBUG")
 
 	client = intacct.NewClient(nil, senderID, senderPassword, userID, userPassword, companyID)
+	client.SetLocationID(locationID)
 	if debug != "" {
 		client.SetDebug(true)
 	}

@@ -72,6 +72,7 @@ type Client struct {
 	userID         string
 	userPassword   string
 	companyID      string
+	locationID     string
 
 	sessionID string
 
@@ -138,6 +139,14 @@ func (c Client) CompanyID() string {
 
 func (c *Client) SetCompanyID(companyID string) {
 	c.companyID = companyID
+}
+
+func (c Client) LocationID() string {
+	return c.locationID
+}
+
+func (c *Client) SetLocationID(locationID string) {
+	c.locationID = locationID
 }
 
 func (c Client) BaseURL() url.URL {
@@ -269,10 +278,14 @@ func (c *Client) Do(req *http.Request, responseBody *Response) (*http.Response, 
 	// 	_, err := io.Copy(w, httpResp.Body)
 	// 	return httpResp, err
 	// }
-
-	err = c.Unmarshal(httpResp.Body, &responseBody)
+	errResp := ErrorResponse{}
+	err = c.Unmarshal(httpResp.Body, &responseBody, &errResp)
 	if err != nil {
 		return httpResp, err
+	}
+
+	if errResp.Error() != "" {
+		return httpResp, errResp
 	}
 
 	if len(responseBody.Operation.Result.ErrorMessage.Errors) > 0 {
@@ -421,7 +434,12 @@ func (r ErrorResponse) Error() string {
 	if len(r.ErrorMessage.Errors) > 0 {
 		str := []string{}
 		for _, err := range r.ErrorMessage.Errors {
-			str = append(str, err.Description)
+			if err.Description != "" {
+				str = append(str, err.Description)
+			}
+			if err.Description2 != "" {
+				str = append(str, err.Description2)
+			}
 		}
 		return strings.Join(str, ", ")
 	}
