@@ -133,47 +133,7 @@ type CreateInvoiceLegacyRequestContent struct {
 			// } `xml:"customfields"`
 			TaxSolutionID string `xml:"taxsolutionid,omitempty"`
 			InvoiceItems  struct {
-				LineItem []struct {
-					GLAccountNo       string `xml:"glaccountno,omitempty"`
-					AccountLabel      string `xml:"accountlabel,omitempty"`
-					OffsetGLAccountNo string `xml:"offsetglaccountno,omitempty"`
-					Amount            Number `xml:"amount"`
-					Memo              string `xml:"memo,omitempty"`
-					LocationID        string `xml:"locationid,omitempty"`
-					DepartmentID      string `xml:"departmentid,omitempty"`
-					Key               string `xml:"key,omitempty"`
-					TotalPaid         string `xml:"totalpaid,omitempty"`
-					TotalDue          string `xml:"totaldue,omitempty"`
-					// CustomFields      struct {
-					// 	CustomField struct {
-					// 		CustomFieldName  string `xml:"customfieldname,omitempty"`
-					// 		CustomFieldValue string `xml:"customfieldvalue,omitempty"`
-					// 	} `xml:"customfield,omitempty"`
-					// } `xml:"customfields,omitempty"`
-					// RevRecTemplate  string `xml:"revrectemplate,omitempty"`
-					// DefRevAccount   string `xml:"defrevaccount,omitempty"`
-					// RevRecStartDate struct {
-					// 	Year  string `xml:"year,omitempty"`
-					// 	Month string `xml:"month,omitempty"`
-					// 	Day   string `xml:"day,omitempty"`
-					// } `xml:"revrecstartdate,omitempty"`
-					// RevRecEndDate struct {
-					// 	Year  string `xml:"year,omitempty"`
-					// 	Month string `xml:"month,omitempty"`
-					// 	Day   string `xml:"day,omitempty"`
-					// } `xml:"revrecenddate"`
-					ProjectID   string `xml:"projectid,omitempty"`
-					CustomerID  string `xml:"customerid,omitempty"`
-					VendorID    string `xml:"vendorid,omitempty"`
-					EmployeeID  string `xml:"employeeid,omitempty"`
-					ItemID      string `xml:"itemid,omitempty"`
-					ClassID     string `xml:"classid,omitempty"`
-					WarehouseID string `xml:"warehouseid,omitempty"`
-					TaxEntries  []struct {
-						DetailID string `xml:"detailid"`
-						TrxTax   string `xml:"trx_tax"`
-					} `xml:"taxentries>taxentry,omitempty"`
-				} `xml:"lineitem,omitempty"`
+				LineItem InvoiceLineItems `xml:"lineitem,omitempty"`
 			} `xml:"invoiceitems,omitempty"`
 		} `xml:"create_invoice"`
 	} `xml:"function"`

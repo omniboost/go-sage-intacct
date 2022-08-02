@@ -3,6 +3,9 @@ package intacct
 import (
 	"encoding/xml"
 	"fmt"
+
+	"github.com/cydev/zero"
+	"github.com/omniboost/go-sage-intacct/omitempty"
 )
 
 type ReadByQuery struct {
@@ -1010,4 +1013,68 @@ type SupDoc struct {
 		} `xml:"attachment"`
 	} `xml:"attachments"`
 	// Customfields string `xml:"customfields"`
+}
+
+type InvoiceLineItems []InvoiceLineItem
+
+type InvoiceLineItem struct {
+	GLAccountNo       string `xml:"glaccountno,omitempty"`
+	AccountLabel      string `xml:"accountlabel,omitempty"`
+	OffsetGLAccountNo string `xml:"offsetglaccountno,omitempty"`
+	Amount            Number `xml:"amount"`
+	Memo              string `xml:"memo,omitempty"`
+	LocationID        string `xml:"locationid,omitempty"`
+	DepartmentID      string `xml:"departmentid,omitempty"`
+	Key               string `xml:"key,omitempty"`
+	TotalPaid         string `xml:"totalpaid,omitempty"`
+	TotalDue          string `xml:"totaldue,omitempty"`
+	// CustomFields      struct {
+	// 	CustomField struct {
+	// 		CustomFieldName  string `xml:"customfieldname,omitempty"`
+	// 		CustomFieldValue string `xml:"customfieldvalue,omitempty"`
+	// 	} `xml:"customfield,omitempty"`
+	// } `xml:"customfields,omitempty"`
+	// RevRecTemplate  string `xml:"revrectemplate,omitempty"`
+	// DefRevAccount   string `xml:"defrevaccount,omitempty"`
+	// RevRecStartDate struct {
+	// 	Year  string `xml:"year,omitempty"`
+	// 	Month string `xml:"month,omitempty"`
+	// 	Day   string `xml:"day,omitempty"`
+	// } `xml:"revrecstartdate,omitempty"`
+	// RevRecEndDate struct {
+	// 	Year  string `xml:"year,omitempty"`
+	// 	Month string `xml:"month,omitempty"`
+	// 	Day   string `xml:"day,omitempty"`
+	// } `xml:"revrecenddate"`
+	ProjectID   string     `xml:"projectid,omitempty"`
+	CustomerID  string     `xml:"customerid,omitempty"`
+	VendorID    string     `xml:"vendorid,omitempty"`
+	EmployeeID  string     `xml:"employeeid,omitempty"`
+	ItemID      string     `xml:"itemid,omitempty"`
+	ClassID     string     `xml:"classid,omitempty"`
+	WarehouseID string     `xml:"warehouseid,omitempty"`
+	TaxEntries  TaxEntries `xml:"taxentries>taxentry,omitempty"`
+}
+
+func (i InvoiceLineItem) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return omitempty.MarshalXML(i, e, start)
+}
+
+type TaxEntries []TaxEntry
+
+func (ee TaxEntries) IsEmpty() bool {
+	return len(ee) == 0
+}
+
+type TaxEntry struct {
+	DetailID string `xml:"detailid"`
+	TrxTax   string `xml:"trx_tax"`
+}
+
+func (te TaxEntry) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return omitempty.MarshalXML(te, e, start)
+}
+
+func (e TaxEntry) IsEmpty() bool {
+	return zero.IsZero(e)
 }
