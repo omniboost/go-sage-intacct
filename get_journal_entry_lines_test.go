@@ -12,8 +12,8 @@ func TestGetJournalEntryLines(t *testing.T) {
 	req := client.NewGetJournalEntryLinesRequest()
 
 	content := req.RequestBody().Content()
-	content.Function.Query.Select = append(content.Function.Query.Select, "AMOUNT", "DEPARTMENT", "LOCATION", "PROJECTID", "CLASSID")
-	content.Function.Query.Filters = append(content.Function.Query.Filters, intacct.EqualTo{Field: "BATCHNO", Value: "17"})
+	content.Function.Query.Select = append(content.Function.Query.Select, "ACCOUNTNO", "AMOUNT", "DEPARTMENT", "LOCATION", "PROJECTID", "CLASSID")
+	content.Function.Query.Filters = append(content.Function.Query.Filters, intacct.EqualTo{Field: "DESCRIPTION", Value: "TEST"})
 	// content.Function.ReadByQuery.Select = []string{"JOURNAL"}
 	req.RequestBody().Operation.Content = content
 	resp, err := req.Do()

@@ -12,7 +12,7 @@ func TestGetJournalEntries(t *testing.T) {
 	req := client.NewGetJournalEntriesRequest()
 
 	content := req.RequestBody().Content()
-	content.Function.ReadByQuery.Query = intacct.RawQuery("JOURNAL = 'MRJ'")
+	content.Function.ReadByQuery.Query = intacct.RawQuery("JOURNAL = 'JR'")
 	// content.Function.ReadByQuery.Select = []string{"JOURNAL"}
 	req.RequestBody().Operation.Content = content
 	resp, err := req.Do()

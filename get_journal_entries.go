@@ -76,7 +76,7 @@ func (r *GetJournalEntriesRequest) Method() string {
 
 func (r GetJournalEntriesRequest) NewContent() GetJournalEntriesRequestContent {
 	content := GetJournalEntriesRequestContent{}
-	content.Function.ReadByQuery.Object = "GLBATCH"
+	content.Function.ReadByQuery.Object = "supdocfolder"
 	content.Function.ReadByQuery.Fields = "*"
 	content.Function.ReadByQuery.Query = NoQuery{}
 	return content
