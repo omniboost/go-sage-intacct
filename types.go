@@ -1068,7 +1068,7 @@ func (ee TaxEntries) IsEmpty() bool {
 
 type TaxEntry struct {
 	DetailID string `xml:"detailid"`
-	TrxTax   string `xml:"trx_tax"`
+	TrxTax   Number `xml:"trx_tax"`
 }
 
 func (te TaxEntry) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
