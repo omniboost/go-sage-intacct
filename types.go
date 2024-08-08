@@ -456,6 +456,9 @@ type ObjectDefinitionType struct {
 	} `xml:"Relationships"`
 }
 
+type LocationEntities []LocationEntity
+type LocationEntity Location
+
 type Locations []Location
 
 type Location struct {
