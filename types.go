@@ -12,7 +12,29 @@ type ReadByQuery struct {
 	Object   string `xml:"object"`
 	Fields   string `xml:"fields"`
 	Query    Query  `xml:"query"`
-	PageSize int    `xml:"pagesize"`
+	PageSize int    `xml:"pagesize,omitempty"`
+	ResultID string `xml:"resultId,omitempty"`
+}
+
+func (r ReadByQuery) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return omitempty.MarshalXML(r, e, start)
+}
+
+func (r ReadByQuery) IsEmpty() bool {
+	return zero.IsZero(r)
+}
+
+type ReadMore struct {
+	Object   string `xml:"object,omitempty"`
+	ResultID string `xml:"resultId,omitempty"`
+}
+
+func (r ReadMore) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return omitempty.MarshalXML(r, e, start)
+}
+
+func (r ReadMore) IsEmpty() bool {
+	return zero.IsZero(r)
 }
 
 type Query interface {
@@ -1080,4 +1102,18 @@ func (te TaxEntry) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 
 func (e TaxEntry) IsEmpty() bool {
 	return zero.IsZero(e)
+}
+
+type Function struct {
+	ControlID   string      `xml:"controlid,attr"`
+	ReadByQuery ReadByQuery `xml:"readByQuery,omitempty"`
+	ReadMore    ReadMore    `xml:"readMore,omitempty"`
+}
+
+func (f Function) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return omitempty.MarshalXML(f, e, start)
+}
+
+func (f Function) IsEmpty() bool {
+	return zero.IsZero(f)
 }

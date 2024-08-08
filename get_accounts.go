@@ -82,10 +82,7 @@ func (r GetAccountsRequest) NewContent() GetAccountsRequestContent {
 }
 
 type GetAccountsRequestContent struct {
-	Function struct {
-		ControlID   string      `xml:"controlid,attr"`
-		ReadByQuery ReadByQuery `xml:"readByQuery"`
-	} `xml:"function"`
+	Function Function `xml:"function"`
 }
 
 type GetAccountsRequestBody struct {
@@ -154,4 +151,30 @@ func (r *GetAccountsRequest) Do() (GetAccountsResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, &responseBody.Response)
 	return *responseBody, err
+}
+
+func (r *GetAccountsRequest) All() (GetAccountsResponseBody, error) {
+	numRemaining := -1
+
+	concat := GetAccountsResponseBody{}
+
+	for numRemaining != 0 {
+		resp, err := r.Do()
+		if err != nil {
+			return resp, err
+		}
+
+		concat.Operation.Result.Data.GLAccounts = append(concat.Operation.Result.Data.GLAccounts, resp.Operation.Result.Data.GLAccounts...)
+
+		numRemaining = resp.Operation.Result.Data.NumRemaining
+
+		// I have no clue how to do this better at this point
+		r.RequestBody().Operation.Content = GetAccountsRequestContent{
+			Function: Function{
+				ReadMore: ReadMore{ResultID: resp.Operation.Result.Data.ResultID},
+			},
+		}
+	}
+
+	return concat, nil
 }

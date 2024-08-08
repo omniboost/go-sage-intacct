@@ -8,7 +8,7 @@ import (
 
 func TestGetAccounts(t *testing.T) {
 	req := client.NewGetAccountsRequest()
-	resp, err := req.Do()
+	resp, err := req.All()
 	if err != nil {
 		t.Error(err)
 	}
