@@ -1117,3 +1117,59 @@ func (f Function) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 func (f Function) IsEmpty() bool {
 	return zero.IsZero(f)
 }
+
+type GLBatches []GLBatch
+
+type GLBatch struct {
+	RecordNo                 string   `xml:"RECORDNO"`
+	BatchNo                  string   `xml:"BATCHNO"`
+	BatchTitle               string   `xml:"BATCH_TITLE"`
+	Balance                  string   `xml:"BALANCE"`
+	Journal                  string   `xml:"JOURNAL"`
+	JournalKey               string   `xml:"JOURNALKEY"`
+	JournalBillable          string   `xml:"JOURNAL_BILLABLE"`
+	Adj                      string   `xml:"ADJ"`
+	BatchDate                string   `xml:"BATCH_DATE"`
+	Module                   string   `xml:"MODULE"`
+	ChildEntity              string   `xml:"CHILDENTITY"`
+	UserKey                  string   `xml:"USERKEY"`
+	ReferenceNo              string   `xml:"REFERENCENO"`
+	Reversed                 string   `xml:"REVERSED"`
+	ReversedKey              string   `xml:"REVERSEDKEY"`
+	ReversedFrom             string   `xml:"REVERSEDFROM"`
+	TemplateKey              string   `xml:"TEMPLATEKEY"`
+	PRBatchKey               string   `xml:"PRBATCHKEY"`
+	PRBatchRecType           string   `xml:"PRBATCHRECTYPE"`
+	Modified                 string   `xml:"MODIFIED"`
+	ModifiedByID             string   `xml:"MODIFIEDBYID"`
+	SchopKey                 string   `xml:"SCHOPKEY"`
+	RRSEntryKey              string   `xml:"RRSENTRYKEY"`
+	RRSKey                   string   `xml:"RRSKEY"`
+	ContractScheduleEntryKey string   `xml:"CONTRACTSCHEDULEENTRYKEY"`
+	ContractScheduleKey      string   `xml:"CONTRACTSCHEDULEKEY"`
+	GLAcctAllocationRunKey   string   `xml:"GLACCTALLOCATIONRUNKEY"`
+	BaseLocation             string   `xml:"BASELOCATION"`
+	BaseLocationNo           string   `xml:"BASELOCATION_NO"`
+	BaseLocationName         string   `xml:"BASELOCATION_NAME"`
+	UserInfoLoginID          string   `xml:"USERINFO.LOGINID"`
+	LocationKey              string   `xml:"LOCATIONKEY"`
+	WhenCreated              string   `xml:"WHENCREATED"`
+	WhenModified             string   `xml:"WHENMODIFIED"`
+	CreatedBy                string   `xml:"CREATEDBY"`
+	ModifiedBy               string   `xml:"MODIFIEDBY"`
+	State                    string   `xml:"STATE"`
+	JournalSeqNu             string   `xml:"JOURNALSEQNO"`
+	TaxImplications          string   `xml:"TAXIMPLICATIONS"`
+	VATVendorKey             string   `xml:"VATVENDORKEY"`
+	VATVendorID              string   `xml:"VATVENDORID"`
+	VATCustomerKey           string   `xml:"VATCUSTOMERKEY"`
+	VATCustomerID            string   `xml:"VATCUSTOMERID"`
+	VATContactKey            string   `xml:"VATCONTACTKEY"`
+	VATContactID             string   `xml:"VATCONTACTID"`
+	TaxSolutionID            string   `xml:"TAXSOLUTIONID"`
+	ShowMultilineTax         string   `xml:"SHOWMULTILINETAX"`
+	TransactionSource        string   `xml:"TRANSACTIONSOURCE"`
+	MegaEntityKey            string   `xml:"MEGAENTITYKEY"`
+	MegaEntityID             string   `xml:"MEGAENTITYID"`
+	MegaEntityName           string   `xml:"MEGAENTITYNAME"`
+}

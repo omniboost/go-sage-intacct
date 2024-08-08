@@ -36,6 +36,7 @@ type ResponseControl struct {
 type ResponseOperation struct {
 	Authentication ResponseAuthentication `xml:"authentication"`
 	Result         ResponseResult         `xml:"result"`
+	ErrorMessage   ErrorMessage           `xml:"errormessage"`
 }
 
 type ResponseAuthentication struct {
@@ -76,6 +77,7 @@ type ResponseResult struct {
 		Invoices         Invoices             `xml:"ARINVOICE"`
 		InvoiceItems     InvoiceItems         `xml:"ARINVOICEITEM"`
 		SupDoc           SupDoc               `xml:"supdoc"`
+		GLBatches        GLBatches            `xml:"glbatch"`
 	} `xml:"data"`
 	ErrorMessage ErrorMessage `xml:"errormessage"`
 }
