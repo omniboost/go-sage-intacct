@@ -284,6 +284,10 @@ func (c *Client) Do(req *http.Request, responseBody *Response) (*http.Response, 
 		return httpResp, err
 	}
 
+	if responseBody.Operation.ErrorMessage.Error() != "" {
+		return httpResp, responseBody.Operation.ErrorMessage
+	}
+
 	if errResp.Error() != "" {
 		return httpResp, errResp
 	}
