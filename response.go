@@ -64,17 +64,18 @@ type ResponseResult struct {
 			Endpoint   string `xml:"endpoint"`
 			LocationID string `xml:"locationid"`
 		} `xml:"api"`
-		GLAccounts   GLAccounts           `xml:"GLACCOUNT"`
-		Classes      Classes              `xml:"class"`
-		Customers    Customers            `xml:"CUSTOMER"`
-		Departments  Departments          `xml:"department"`
-		Type         ObjectDefinitionType `xml:"Type"`
-		Locations    Locations            `xml:"location"`
-		Projects     Projects             `xml:"project"`
-		TaxDetails   TaxDetails           `xml:"TAXDETAIL"`
-		Invoices     Invoices             `xml:"ARINVOICE"`
-		InvoiceItems InvoiceItems         `xml:"ARINVOICEITEM"`
-		SupDoc       SupDoc               `xml:"supdoc"`
+		GLAccounts       GLAccounts           `xml:"glaccount"`
+		Classes          Classes              `xml:"class"`
+		Customers        Customers            `xml:"CUSTOMER"`
+		Departments      Departments          `xml:"department"`
+		Type             ObjectDefinitionType `xml:"Type"`
+		Locations        Locations            `xml:"location"`
+		LocationEntities LocationEntities     `xml:"locationentity"`
+		Projects         Projects             `xml:"project"`
+		TaxDetails       TaxDetails           `xml:"TAXDETAIL"`
+		Invoices         Invoices             `xml:"ARINVOICE"`
+		InvoiceItems     InvoiceItems         `xml:"ARINVOICEITEM"`
+		SupDoc           SupDoc               `xml:"supdoc"`
 	} `xml:"data"`
 	ErrorMessage ErrorMessage `xml:"errormessage"`
 }
