@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/gofrs/uuid"
 	"github.com/omniboost/go-sage-intacct/utils"
 )
 
@@ -171,7 +172,8 @@ func (r *GetAccountsRequest) All() (GetAccountsResponseBody, error) {
 		// I have no clue how to do this better at this point
 		r.RequestBody().Operation.Content = GetAccountsRequestContent{
 			Function: Function{
-				ReadMore: ReadMore{ResultID: resp.Operation.Result.Data.ResultID},
+				ControlID: uuid.Must(uuid.NewV4()).String(),
+				ReadMore:  ReadMore{ResultID: resp.Operation.Result.Data.ResultID},
 			},
 		}
 	}
