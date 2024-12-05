@@ -114,6 +114,7 @@ func (r *GetAPISessionRequest) NewRequestBody() GetAPISessionRequestBody {
 	}
 	content := r.NewGetAPISessionRequestContent()
 	content.Function.GetAPISession.LocationID = r.client.LocationID()
+	content.Function.ControlID = r.client.GenerateControlID()
 	body.Operation.Content = content
 	return body
 }
