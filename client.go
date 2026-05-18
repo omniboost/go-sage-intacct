@@ -15,6 +15,7 @@ import (
 	"sync"
 	"text/template"
 
+	"github.com/elliotchance/pie/v2"
 	"github.com/gofrs/uuid"
 	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
@@ -463,9 +464,12 @@ func (em ErrorMessage) Error() string {
 	}
 
 	var errors *multierror.Error
-	for _, err := range em.Errors {
+
+	// make errors unique
+	for _, err := range pie.Unique(em.Errors) {
 		errors = multierror.Append(errors, err)
 	}
+
 	return errors.Error()
 }
 
