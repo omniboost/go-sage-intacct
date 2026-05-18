@@ -100,7 +100,8 @@ type CreateJournalEntryRequestContent struct {
 					Currency       string `xml:"CURRENCY"`
 					TrType         int    `xml:"TR_TYPE"`
 					Amount         Number `xml:"AMOUNT"`
-					ExchRateTypeID string `xml:"EXCH_RATE_TYPE_ID"`
+					ExchRateTypeID string `xml:"EXCH_RATE_TYPE_ID,omitempty"`
+					ExchangeRate   Number `xml:"EXCHANGE_RATE,omitempty"`
 					Description    string `xml:"DESCRIPTION"`
 					TaxEntries     []struct {
 						TrxTax   Number `xml:"TRX_TAX"`
