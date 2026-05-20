@@ -107,6 +107,7 @@ type CreateJournalEntryRequestContent struct {
 						TrxTax   Number `xml:"TRX_TAX"`
 						DetailID string `xml:"DETAILID"`
 					} `xml:"TAXENTRIES>TAXENTRY"`
+					CustomerID string `xml:"CUSTOMERID,omitempty"`
 				} `xml:"ENTRIES>GLENTRY"`
 			} `xml:"GLBATCH"`
 		} `xml:"create"`
