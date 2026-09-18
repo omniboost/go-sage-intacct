@@ -7,10 +7,14 @@ require (
 	github.com/elliotchance/pie/v2 v2.9.1
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/gorilla/schema v1.2.0
-	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/pkg/errors v0.9.1
 	gopkg.in/guregu/null.v3 v3.5.0
 )
 
-replace github.com/gorilla/schema => github.com/omniboost/schema v1.1.1-0.20191030093734-a170fe1a7240
+require (
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	golang.org/x/exp v0.0.0-20220321173239-a90fa8a75705 // indirect
+)
+
+replace github.com/gorilla/schema => github.com/omniboost/schema v1.1.1-0.20211111150515-2e872025e306

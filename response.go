@@ -68,6 +68,9 @@ type ResponseResult struct {
 		GLAccounts       GLAccounts           `xml:"glaccount"`
 		Classes          Classes              `xml:"class"`
 		Customers        Customers            `xml:"CUSTOMER"`
+		Vendors          Vendors              `xml:"VENDOR"`
+		Bills            Bills                `xml:"APBILL"`
+		APAdjustments    APAdjustments        `xml:"APADJUSTMENT"`
 		Departments      Departments          `xml:"department"`
 		Type             ObjectDefinitionType `xml:"Type"`
 		Locations        Locations            `xml:"location"`
