@@ -90,24 +90,61 @@ type CreateJournalEntryRequestContent struct {
 				BatchTitle      string `xml:"BATCH_TITLE"`
 				State           string `xml:"STATE,omitempty"`
 				TaxImplications string `xml:"TAXIMPLICATIONS,omitempty"`
-				TaxSolutionID   string `xml:"TAXSOLUTIONID,omitempty"`
-				Entries         []struct {
+				VATVendorID     string `xml:"VATVENDORID,omitempty"`
+				VATCustomerID   string `xml:"VATCUSTOMERID,omitempty"`
+				VATContactID    string `xml:"VATCONTACTID,omitempty"`
+				HistoryComment  string `xml:"HISTORY_COMMENT,omitempty"`
+				ReferenceNo     string `xml:"REFERENCENO,omitempty"`
+				// BaseLocationNo is the source entity ID; required for
+				// multi-entity companies when the batch doesn't balance
+				// within a single entity.
+				BaseLocationNo    string `xml:"BASELOCATION_NO,omitempty"`
+				SupDocID          string `xml:"SUPDOCID,omitempty"`
+				TaxSolutionID     string `xml:"TAXSOLUTIONID,omitempty"`
+				TransactionSource string `xml:"TRANSACTIONSOURCE,omitempty"`
+				Entries           []struct {
+					Document       string `xml:"DOCUMENT,omitempty"`
 					AccountNo      string `xml:"ACCOUNTNO"`
 					Department     string `xml:"DEPARTMENT,omitempty"`
 					Location       string `xml:"LOCATION,omitempty"`
 					ProjectID      string `xml:"PROJECTID"`
+					TaskID         string `xml:"TASKID,omitempty"`
+					CostTypeID     string `xml:"COSTTYPEID,omitempty"`
 					ClassID        string `xml:"CLASSID"`
 					Currency       string `xml:"CURRENCY"`
 					TrType         int    `xml:"TR_TYPE"`
 					Amount         Number `xml:"AMOUNT"`
+					ExchRateDate   string `xml:"EXCH_RATE_DATE,omitempty"`
 					ExchRateTypeID string `xml:"EXCH_RATE_TYPE_ID,omitempty"`
 					ExchangeRate   Number `xml:"EXCHANGE_RATE,omitempty"`
 					Description    string `xml:"DESCRIPTION"`
-					TaxEntries     []struct {
+					Allocation     string `xml:"ALLOCATION,omitempty"`
+					Split          []struct {
+						Amount       Number `xml:"AMOUNT"`
+						DepartmentID string `xml:"DEPARTMENTID,omitempty"`
+						LocationID   string `xml:"LOCATIONID,omitempty"`
+						ProjectID    string `xml:"PROJECTID,omitempty"`
+						TaskID       string `xml:"TASKID,omitempty"`
+						CostTypeID   string `xml:"COSTTYPEID,omitempty"`
+						CustomerID   string `xml:"CUSTOMERID,omitempty"`
+						VendorID     string `xml:"VENDORID,omitempty"`
+						EmployeeID   string `xml:"EMPLOYEEID,omitempty"`
+						ItemID       string `xml:"ITEMID,omitempty"`
+						ClassID      string `xml:"CLASSID,omitempty"`
+						ContractID   string `xml:"CONTRACTID,omitempty"`
+						WarehouseID  string `xml:"WAREHOUSEID,omitempty"`
+					} `xml:"SPLIT>SPLITENTRY,omitempty"`
+					TaxEntries []struct {
 						TrxTax   Number `xml:"TRX_TAX"`
 						DetailID string `xml:"DETAILID"`
 					} `xml:"TAXENTRIES>TAXENTRY"`
-					CustomerID string `xml:"CUSTOMERID,omitempty"`
+					CustomerID  string `xml:"CUSTOMERID,omitempty"`
+					VendorID    string `xml:"VENDORID,omitempty"`
+					EmployeeID  string `xml:"EMPLOYEEID,omitempty"`
+					ItemID      string `xml:"ITEMID,omitempty"`
+					ContractID  string `xml:"CONTRACTID,omitempty"`
+					WarehouseID string `xml:"WAREHOUSEID,omitempty"`
+					Billable    string `xml:"BILLABLE,omitempty"`
 				} `xml:"ENTRIES>GLENTRY"`
 			} `xml:"GLBATCH"`
 		} `xml:"create"`
