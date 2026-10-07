@@ -110,8 +110,8 @@ type CreateAPAdjustmentRequestContent struct {
 				Month string `xml:"month"`
 				Day   string `xml:"day"`
 			} `xml:"exchratedate,omitempty"`
-			ExchRateType      string `xml:"exchratetype,omitempty"`
-			ExchRate          string `xml:"exchrate,omitempty"`
+			ExchRateType      string `xml:"exchratetype"`
+			ExchRate          Number `xml:"exchrate,omitempty"`
 			NoGL              string `xml:"nogl,omitempty"`
 			InclusiveTax      string `xml:"inclusivetax,omitempty"`
 			TaxSolutionID     string `xml:"taxsolutionid,omitempty"`
