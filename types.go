@@ -1501,3 +1501,17 @@ type Vendor struct {
 	MegaEntityName                       string  `xml:"MEGAENTITYNAME,omitempty"`
 	DisplayContact                       Contact `xml:"DISPLAYCONTACT,omitempty"`
 }
+
+type OrderEntryTransactions []OrderEntryTransaction
+
+type OrderEntryTransaction struct {
+	RecordNo    string `xml:"RECORDNO"`
+	DocID       string `xml:"DOCID"`
+	DocNo       string `xml:"DOCNO"`
+	DocParID    string `xml:"DOCPARID"`
+	PONumber    string `xml:"PONUMBER"`
+	State       string `xml:"STATE"`
+	CustVendID  string `xml:"CUSTVENDID"`
+	Total       string `xml:"TOTAL"`
+	WhenCreated string `xml:"WHENCREATED"`
+}
