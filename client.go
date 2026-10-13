@@ -14,10 +14,13 @@ import (
 	"strings"
 	"sync"
 	"text/template"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/elliotchance/pie/v2"
 	"github.com/gofrs/uuid"
 	"github.com/hashicorp/go-multierror"
+	"github.com/omniboost/go-httperr"
 	"github.com/pkg/errors"
 )
 
@@ -381,9 +384,16 @@ func CheckResponse(r *http.Response) error {
 		return errorResponse
 	}
 
+	// a non-XML error (e.g. a Cloudflare HTML error page) can't be parsed:
+	// return the body if it's plain text, otherwise surface the HTTP status
+	// instead of the content-type mismatch
 	err = checkContentType(r)
 	if err != nil {
-		return err
+		if isPlainText(data) {
+			return errors.New(string(bytes.TrimSpace(data)))
+		}
+
+		return &httperr.Error{StatusCode: r.StatusCode, Err: errors.New(r.Status)}
 	}
 
 	if len(data) == 0 {
@@ -494,6 +504,16 @@ func (e Error) Error() string {
 	} else {
 		return fmt.Sprintf("%s: %s", e.ErrorNo, strings.Join(descriptions, ", "))
 	}
+}
+
+func isPlainText(b []byte) bool {
+	s := bytes.TrimSpace(b)
+	return len(s) > 0 && utf8.Valid(s) && bytes.IndexFunc(s, func(r rune) bool {
+		return !unicode.IsLetter(r) &&
+			!unicode.IsDigit(r) &&
+			!unicode.IsSpace(r) &&
+			!strings.ContainsRune(`.,!?;:'"()-_/\@#%&*+=`, r)
+	}) == -1
 }
 
 func checkContentType(response *http.Response) error {

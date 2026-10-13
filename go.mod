@@ -1,6 +1,6 @@
 module github.com/omniboost/go-sage-intacct
 
-go 1.25.1
+go 1.25.3
 
 require (
 	github.com/cydev/zero v0.0.0-20160322155811-4a4535dd56e7
@@ -14,6 +14,7 @@ require (
 
 require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/omniboost/go-httperr v0.0.0-20251103155253-030b17131c87 // indirect
 	golang.org/x/exp v0.0.0-20220321173239-a90fa8a75705 // indirect
 )
 

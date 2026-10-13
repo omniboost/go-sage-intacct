@@ -11,6 +11,8 @@ github.com/hashicorp/errwrap v1.1.0 h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY
 github.com/hashicorp/errwrap v1.1.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
 github.com/hashicorp/go-multierror v1.1.1 h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo=
 github.com/hashicorp/go-multierror v1.1.1/go.mod h1:iw975J/qwKPdAO1clOe2L8331t/9/fmwbPZ6JB6eMoM=
+github.com/omniboost/go-httperr v0.0.0-20251103155253-030b17131c87 h1:UMRh/ZStOFdJSms/4CPeZviorsXkim6ah4mhg4Qy/oI=
+github.com/omniboost/go-httperr v0.0.0-20251103155253-030b17131c87/go.mod h1:bNUUT49+LfJKtycbydasPm8Rd/vP8WfTgUVYEvE4vhI=
 github.com/omniboost/schema v1.1.1-0.20211111150515-2e872025e306 h1:9GMWNGwzd6895ErDvWeIipKuaEQ+0l3thaLm89u+El8=
 github.com/omniboost/schema v1.1.1-0.20211111150515-2e872025e306/go.mod h1:p/BKiaWM4vXHpCIdM2HAnmxb+3q95jb2KwvX9bK1OoY=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
