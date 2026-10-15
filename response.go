@@ -82,6 +82,7 @@ type ResponseResult struct {
 		SupDoc                 SupDoc                 `xml:"supdoc"`
 		GLBatches              GLBatches              `xml:"glbatch"`
 		OrderEntryTransactions OrderEntryTransactions `xml:"sodocument"`
+		Items                  Items                  `xml:"item"`
 	} `xml:"data"`
 	ErrorMessage ErrorMessage `xml:"errormessage"`
 }

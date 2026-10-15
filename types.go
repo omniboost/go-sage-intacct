@@ -1515,3 +1515,23 @@ type OrderEntryTransaction struct {
 	Total       string `xml:"TOTAL"`
 	WhenCreated string `xml:"WHENCREATED"`
 }
+
+type Items []Item
+
+type Item struct {
+	RecordNo      string `xml:"RECORDNO,omitempty"`
+	ItemID        string `xml:"ITEMID,omitempty"`
+	Name          string `xml:"NAME,omitempty"`
+	Status        string `xml:"STATUS,omitempty"`
+	ItemType      string `xml:"ITEMTYPE,omitempty"`
+	ProductLineID string `xml:"PRODUCTLINEID,omitempty"`
+	GLGroup       string `xml:"GLGROUP,omitempty"`
+	UOMGroup      string `xml:"UOMGRP,omitempty"`
+	Taxable       string `xml:"TAXABLE,omitempty"`
+	// TaxGroup is the item tax group, assigned by name on create.
+	TaxGroup *ItemTaxGroup `xml:"TAXGROUP,omitempty"`
+}
+
+type ItemTaxGroup struct {
+	Name string `xml:"NAME"`
+}
