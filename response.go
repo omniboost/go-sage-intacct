@@ -65,24 +65,25 @@ type ResponseResult struct {
 			Endpoint   string `xml:"endpoint"`
 			LocationID string `xml:"locationid"`
 		} `xml:"api"`
-		GLAccounts             GLAccounts             `xml:"glaccount"`
-		Classes                Classes                `xml:"class"`
-		Customers              Customers              `xml:"CUSTOMER"`
-		Vendors                Vendors                `xml:"VENDOR"`
-		Bills                  Bills                  `xml:"APBILL"`
-		APAdjustments          APAdjustments          `xml:"APADJUSTMENT"`
-		Departments            Departments            `xml:"department"`
-		Type                   ObjectDefinitionType   `xml:"Type"`
-		Locations              Locations              `xml:"location"`
-		LocationEntities       LocationEntities       `xml:"locationentity"`
-		Projects               Projects               `xml:"project"`
-		TaxDetails             TaxDetails             `xml:"TAXDETAIL"`
-		Invoices               Invoices               `xml:"ARINVOICE"`
-		InvoiceItems           InvoiceItems           `xml:"ARINVOICEITEM"`
-		SupDoc                 SupDoc                 `xml:"supdoc"`
-		GLBatches              GLBatches              `xml:"glbatch"`
-		OrderEntryTransactions OrderEntryTransactions `xml:"sodocument"`
-		Items                  Items                  `xml:"item"`
+		GLAccounts                       GLAccounts                       `xml:"glaccount"`
+		Classes                          Classes                          `xml:"class"`
+		Customers                        Customers                        `xml:"CUSTOMER"`
+		Vendors                          Vendors                          `xml:"VENDOR"`
+		Bills                            Bills                            `xml:"APBILL"`
+		APAdjustments                    APAdjustments                    `xml:"APADJUSTMENT"`
+		Departments                      Departments                      `xml:"department"`
+		Type                             ObjectDefinitionType             `xml:"Type"`
+		Locations                        Locations                        `xml:"location"`
+		LocationEntities                 LocationEntities                 `xml:"locationentity"`
+		Projects                         Projects                         `xml:"project"`
+		TaxDetails                       TaxDetails                       `xml:"TAXDETAIL"`
+		Invoices                         Invoices                         `xml:"ARINVOICE"`
+		InvoiceItems                     InvoiceItems                     `xml:"ARINVOICEITEM"`
+		SupDoc                           SupDoc                           `xml:"supdoc"`
+		GLBatches                        GLBatches                        `xml:"glbatch"`
+		OrderEntryTransactions           OrderEntryTransactions           `xml:"sodocument"`
+		Items                            Items                            `xml:"item"`
+		OrderEntryTransactionDefinitions OrderEntryTransactionDefinitions `xml:"sodocumentparams"`
 	} `xml:"data"`
 	ErrorMessage ErrorMessage `xml:"errormessage"`
 }

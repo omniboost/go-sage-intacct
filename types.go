@@ -1535,3 +1535,19 @@ type Item struct {
 type ItemTaxGroup struct {
 	Name string `xml:"NAME"`
 }
+
+type OrderEntryTransactionDefinitions []OrderEntryTransactionDefinition
+
+// OrderEntryTransactionDefinition is a transaction definition (SODOCUMENTPARAMS)
+type OrderEntryTransactionDefinition struct {
+	RecordNo string `xml:"RECORDNO"`
+	DocID    string `xml:"DOCID"`
+	Status   string `xml:"STATUS"`
+	// EnableOverrideTax is the "Line-item tax" setting
+	EnableOverrideTax string `xml:"ENABLEOVERRIDETAX"`
+	// ShowTotals is the "Enable subtotals" setting
+	ShowTotals       string `xml:"SHOW_TOTALS"`
+	SubtotalTemplate string `xml:"SUBTOTALTEMPLATE"`
+	// DisableVAT is the "Do not capture tax" setting
+	DisableVAT string `xml:"DISABLEVAT"`
+}
