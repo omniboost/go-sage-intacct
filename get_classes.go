@@ -82,10 +82,7 @@ func (r GetClassesRequest) NewContent() GetClassesRequestContent {
 }
 
 type GetClassesRequestContent struct {
-	Function struct {
-		ControlID   string      `xml:"controlid,attr"`
-		ReadByQuery ReadByQuery `xml:"readByQuery"`
-	} `xml:"function"`
+	Function Function `xml:"function"`
 }
 
 type GetClassesRequestBody struct {
@@ -154,4 +151,32 @@ func (r *GetClassesRequest) Do() (GetClassesResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, &responseBody.Response)
 	return *responseBody, err
+}
+
+func (r *GetClassesRequest) All() (GetClassesResponseBody, error) {
+	resp, err := r.Do()
+	if err != nil {
+		return resp, err
+	}
+
+	concat := resp.Operation.Result.Data.Classes
+
+	for resp.Operation.Result.Data.NumRemaining != 0 {
+		r.RequestBody().Operation.Content = GetClassesRequestContent{
+			Function: Function{
+				ControlID: r.client.GenerateControlID(),
+				ReadMore:  ReadMore{ResultID: resp.Operation.Result.Data.ResultID},
+			},
+		}
+
+		resp, err = r.Do()
+		if err != nil {
+			return resp, err
+		}
+
+		concat = append(concat, resp.Operation.Result.Data.Classes...)
+	}
+
+	resp.Operation.Result.Data.Classes = concat
+	return resp, nil
 }

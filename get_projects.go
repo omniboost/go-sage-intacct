@@ -82,10 +82,7 @@ func (r GetProjectsRequest) NewContent() GetProjectsRequestContent {
 }
 
 type GetProjectsRequestContent struct {
-	Function struct {
-		ControlID   string      `xml:"controlid,attr"`
-		ReadByQuery ReadByQuery `xml:"readByQuery"`
-	} `xml:"function"`
+	Function Function `xml:"function"`
 }
 
 type GetProjectsRequestBody struct {
@@ -156,24 +153,30 @@ func (r *GetProjectsRequest) Do() (GetProjectsResponseBody, error) {
 	return *responseBody, err
 }
 
-// func (r *GetProjectsRequest) All() (GetProjectsResponseBody, error) {
-// 	resp, err := r.Do()
-// 	if err != nil {
-// 		return resp, err
-// 	}
+func (r *GetProjectsRequest) All() (GetProjectsResponseBody, error) {
+	resp, err := r.Do()
+	if err != nil {
+		return resp, err
+	}
 
-// 	concat := resp.Data().Projects
+	concat := resp.Operation.Result.Data.Projects
 
-// 	for resp.Data().NumRemaining != 0 {
-// 		r.RequestBody().Content().Function.ReadByQuery.ResultID = resp.Data().ResultID
-// 		resp, err = r.Do()
-// 		if err != nil {
-// 			return resp, err
-// 		}
+	for resp.Operation.Result.Data.NumRemaining != 0 {
+		r.RequestBody().Operation.Content = GetProjectsRequestContent{
+			Function: Function{
+				ControlID: r.client.GenerateControlID(),
+				ReadMore:  ReadMore{ResultID: resp.Operation.Result.Data.ResultID},
+			},
+		}
 
-// 		concat = append(concat, resp.Data().Projects...)
-// 	}
+		resp, err = r.Do()
+		if err != nil {
+			return resp, err
+		}
 
-// 	resp.Data().Projects = concat
-// 	return resp, nil
-// }
+		concat = append(concat, resp.Operation.Result.Data.Projects...)
+	}
+
+	resp.Operation.Result.Data.Projects = concat
+	return resp, nil
+}
